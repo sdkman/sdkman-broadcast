@@ -1,0 +1,72 @@
+import com.wiredforcode.gradle.spawn.KillProcessTask
+import com.wiredforcode.gradle.spawn.SpawnProcessTask
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RELEASE"
+        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.1.0'
+        classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'spring-boot'
+apply plugin: 'mongo'
+apply plugin: 'spawn'
+
+repositories {
+    maven {
+        mavenCentral()
+        url 'http://repo.spring.io/release'
+    }
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy:2.2.2"
+    compile "org.springframework.boot:spring-boot-starter-web:1.0.0.RELEASE"
+    compile "org.springframework.data:spring-data-commons:1.7.1.RELEASE"
+    compile "org.springframework.data:spring-data-mongodb:1.4.1.RELEASE"
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+    testCompile 'junit:junit:4.11'
+    testCompile 'info.cukes:cucumber-junit:1.1.5'
+    testCompile 'info.cukes:cucumber-groovy:1.1.5'
+    testCompile 'com.github.groovy-wslite:groovy-wslite:0.8.0'
+    testCompile "org.mongodb:mongo-java-driver:2.9.1"
+}
+
+test.testLogging.exceptionFormat = 'full'
+
+configurations {
+    functTestCompile.extendsFrom testCompile
+    functTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    functionalTest {
+        groovy.srcDir file('src/testFunctional/groovy')
+        resources.srcDir     file('src/testFunctional/resources')
+        compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.functTestCompile
+        runtimeClasspath = output + compileClasspath + configurations.functTestRuntime
+    }
+}
+
+task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
+    command "java -jar ${projectDir}/build/libs/zim-service.jar"
+    ready 'Started Application'
+}
+
+task stopServer(type: KillProcessTask)
+
+task functionalTest(type: Test) {
+    testClassesDir = sourceSets.functionalTest.output.classesDir
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    dependsOn startManagedMongoDb, startServer
+    finalizedBy stopServer
+}
+
+check.dependsOn functionalTest
