@@ -57,7 +57,7 @@ sourceSets {
 }
 
 task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
-    command "java -jar ${projectDir}/build/libs/zim-service.jar"
+    command "java -jar ${projectDir}/build/libs/sdk-manager-api.jar"
     ready 'Started Application'
 }
 
