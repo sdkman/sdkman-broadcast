@@ -7,6 +7,6 @@ import org.junit.runner.RunWith
 	strict=true,
 	features=["src/testFunctional/cucumber"],
 	glue=["src/testFunctional/steps"],
-	tags=["~@manual", "~@review", "@wip"]
+	tags=["~@manual", "~@review"]
 )
 class RunCukesTest {}
