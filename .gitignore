@@ -1,4 +1,4 @@
 .gradle
 .idea
 build
-gvm-rest.iml
+sdk-manager-api.iml
