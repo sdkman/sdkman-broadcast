@@ -25,11 +25,11 @@ class BroadcastControllerSpec extends Specification {
         def broadcastPage = Mock(Page)
 
         when:
-        ResponseEntity<String> result = controller.get(1)
+        ResponseEntity<String> result = controller.get()
 
         then:
         broadcastPage.getContent() >> [ broadcast ]
-        1 * repository.findAll(_) >> broadcastPage
+        1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
 
         and:
         result.statusCode == OK

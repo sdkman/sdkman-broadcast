@@ -25,4 +25,13 @@ class BroadcastController {
         def broadcasts = page.content.collect({ it.text }).join('\n')
         new ResponseEntity<String>(broadcasts, HttpStatus.OK)
     }
+
+    @RequestMapping(value = "/broadcast", produces = "text/plain")
+    @ResponseBody ResponseEntity<String> get() {
+        def pageRequest = new PageRequest(0, 1, DESC, "date")
+        def page = repository.findAll(pageRequest)
+
+        def broadcasts = page.content.collect({ it.text }).join('\n')
+        new ResponseEntity<String>(broadcasts, HttpStatus.OK)
+    }
 }
