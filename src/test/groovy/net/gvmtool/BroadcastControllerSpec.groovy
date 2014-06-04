@@ -15,7 +15,7 @@ class BroadcastControllerSpec extends Specification {
     BroadcastRepository repository = Mock()
 
     void setup() {
-        controller = new BroadcastController(repository:repository)
+        controller = new BroadcastController(repository: repository)
     }
 
     void "should successfully return the current broadcast message"() {
@@ -25,11 +25,11 @@ class BroadcastControllerSpec extends Specification {
         def broadcastPage = Mock(Page)
 
         when:
-        ResponseEntity<String> result = controller.get()
+        ResponseEntity<String> result = controller.get(1)
 
         then:
-        broadcastPage.getContent() >> [ broadcast ]
-        1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
+        broadcastPage.getContent() >> [broadcast]
+        1 * repository.findAll({ it.pageSize == 1 }) >> broadcastPage
 
         and:
         result.statusCode == OK
@@ -49,13 +49,13 @@ class BroadcastControllerSpec extends Specification {
         def lines = result.body.readLines()
 
         then:
-        broadcastPage.getContent() >> [ broadcast1, broadcast2 ]
-        1 * repository.findAll({it.pageSize == limit}) >> broadcastPage
+        broadcastPage.getContent() >> [broadcast1, broadcast2]
+        1 * repository.findAll({ it.pageSize == limit }) >> broadcastPage
 
         and:
         lines[0] == broadcast1.text
         lines[1] == broadcast2.text
-        ! lines.contains(broadcast3.text)
+        !lines.contains(broadcast3.text)
     }
 
 }

@@ -14,7 +14,7 @@ And(~'^the latest broadcast message is requested$') { ->
 }
 
 And(~'^the latest "([^"]*)" broadcast messages are requested$') { String limit ->
-    response = restClient.get(path: "/broadcast/$limit").text
+    response = restClient.get(path: "/broadcast?limit=${limit}").text
 }
 
 And(~'^the broadcast message "([^"]*)" is received$') { String message ->
