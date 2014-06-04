@@ -13,6 +13,6 @@ class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Override
     Mongo mongo() throws Exception {
-        return new Mongo()
+        new Mongo()
     }
 }
