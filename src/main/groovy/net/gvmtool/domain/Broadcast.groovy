@@ -1,4 +1,4 @@
-package net.gvmtool
+package net.gvmtool.domain
 
 import org.springframework.data.mongodb.core.mapping.Document
 

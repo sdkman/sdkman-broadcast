@@ -1,4 +1,4 @@
-package net.gvmtool
+package net.gvmtool.config
 
 import com.mongodb.Mongo
 import org.springframework.context.annotation.Configuration

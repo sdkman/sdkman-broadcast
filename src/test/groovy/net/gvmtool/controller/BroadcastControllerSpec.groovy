@@ -1,12 +1,11 @@
-package net.gvmtool
+package net.gvmtool.controller
 
+import net.gvmtool.domain.Broadcast
+import net.gvmtool.repo.BroadcastRepository
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
-import static org.springframework.data.domain.Sort.Direction.*
 import static org.springframework.http.HttpStatus.OK
 
 class BroadcastControllerSpec extends Specification {
