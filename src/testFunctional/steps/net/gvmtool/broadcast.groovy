@@ -3,7 +3,7 @@ package net.gvmtool
 import static cucumber.api.groovy.EN.And
 import static db.MongoHelper.insertBroadcastInDb
 
-lineOrder = ["first": 0, "second": 1, "third": 2, "forth": 3, "fifth": 4]
+lineOrder = ["first": 1, "second": 2, "third": 3, "forth": 4, "fifth": 5]
 
 And(~'^the message "([^"]*)"$') { String message ->
     insertBroadcastInDb(db, message)
@@ -18,7 +18,7 @@ And(~'^the latest "([^"]*)" broadcast messages are requested$') { String limit -
 }
 
 And(~'^the broadcast message "([^"]*)" is received$') { String message ->
-    assert response == message
+    assert response.contains(message)
 }
 
 And(~'^the message "([^"]*)" on the date "([^"]*)"$') { String message, Date date ->

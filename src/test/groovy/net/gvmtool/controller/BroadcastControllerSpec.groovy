@@ -17,7 +17,7 @@ class BroadcastControllerSpec extends Specification {
         controller = new BroadcastController(repository: repository)
     }
 
-    void "should successfully return the current broadcast message"() {
+    void "should successfully return the current broadcast message from the repo"() {
         given:
         def message = "Welcome to GVM!"
         def broadcast = new Broadcast(text: message, date: new Date())
@@ -32,10 +32,10 @@ class BroadcastControllerSpec extends Specification {
 
         and:
         result.statusCode == OK
-        result.body == message
+        result.body.contains message
     }
 
-    void "should return a given number of latest number of broadcasts"() {
+    void "should return a given number of latest broadcasts from the repo"() {
         given:
         def limit = 2
         def broadcast1 = new Broadcast(text: "broadcast 1", date: new Date())
@@ -43,17 +43,23 @@ class BroadcastControllerSpec extends Specification {
         def broadcast3 = new Broadcast(text: "broadcast 3", date: new Date())
         def broadcastPage = Mock(Page)
 
+        and:
+        broadcastPage.getContent() >> [broadcast1, broadcast2]
+
         when:
         ResponseEntity<String> result = controller.get(limit)
         def lines = result.body.readLines()
 
         then:
-        broadcastPage.getContent() >> [broadcast1, broadcast2]
         1 * repository.findAll({ it.pageSize == limit }) >> broadcastPage
 
         and:
-        lines[0] == broadcast1.text
-        lines[1] == broadcast2.text
+        lines[0] == '==== BROADCAST ================================================================='
+        lines[1] == broadcast1.text
+        lines[2] == broadcast2.text
+        lines[3] == '================================================================================'
+
+        and:
         !lines.contains(broadcast3.text)
     }
 
