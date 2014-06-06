@@ -36,13 +36,18 @@ class TextRenderServiceSpec extends Specification {
 
     void "should place each string on a new line"() {
         given:
-        def lines = ['1', '2']
+        def line1 = 'Groovy X.Y.Z ready for download'
+        def line2 = 'Gradle A.B.C ready for download'
+        def lines = [line1, line2]
 
         when:
         def text = service.prepare(lines)
+        def readLines = text.readLines()
 
         then:
-        text.readLines().size() == 4
+        readLines.size() == 4
+        readLines[1] == line1
+        readLines[2] == line2
     }
 
 }
