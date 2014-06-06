@@ -1,5 +1,11 @@
 Feature: Broadcast
 
+  Scenario: Identify the latest Broadcast
+    Given the message "Groovy 2.3.0!" on the date "May 12, 2014" with id "12345"
+    And the message "Groovy 2.3.0-rc-1." on the date "May 11, 2014" with id "12344"
+    When the identifier of the latest broadcast message is requested
+    Then the identifier is "12345"
+
   Scenario: Broadcast a message
     Given the message "Welcome to GVM!"
     When the latest broadcast message is requested

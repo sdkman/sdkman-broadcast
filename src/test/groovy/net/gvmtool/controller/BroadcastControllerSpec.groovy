@@ -4,6 +4,7 @@ import net.gvmtool.domain.Broadcast
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.service.TextRenderService
 import org.springframework.data.domain.Page
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
@@ -17,6 +18,26 @@ class BroadcastControllerSpec extends Specification {
 
     void setup() {
         controller = new BroadcastController(renderService: renderService, repository: repository)
+    }
+
+    void "should successfully identify the latest broadcast message"() {
+        given:
+        def id = 12345
+        def broadcast = new Broadcast(id: id)
+        def broadcastPage = Stub(Page)
+
+        and:
+        broadcastPage.getContent() >> [broadcast]
+
+        when:
+        ResponseEntity<String> response = controller.latestId()
+
+        then:
+        1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
+
+        and:
+        response.statusCode == HttpStatus.OK
+        response.body == id.toString()
     }
 
     void "should successfully return the current broadcast message from the repo"() {

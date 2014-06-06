@@ -19,10 +19,10 @@ class MongoHelper {
         mongo.getDB("gvm")
     }
 
-    static insertBroadcastInDb(DB db, String broadcast, Date date = new Date()){
+    static insertBroadcastInDb(DB db, String broadcast, Date date = new Date(), uid = id.getAndIncrement()){
         def collection  = db.getCollection("broadcast")
         BasicDBObjectBuilder builder = start()
-            .add("_id", id.getAndIncrement().toString())
+            .add("_id", uid.toString())
             .add("text", broadcast)
             .add("date", date)
         collection.insert(builder.get())
