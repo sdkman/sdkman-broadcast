@@ -1,6 +1,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
+import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.service.TextRenderService
 import org.springframework.data.domain.Page
@@ -38,6 +39,35 @@ class BroadcastControllerSpec extends Specification {
         and:
         response.statusCode == HttpStatus.OK
         response.body == id.toString()
+    }
+
+    void "should return a single broadcast for a valid id"() {
+        given:
+        def id = 1234
+        def text = "some message"
+        def broadcast = new Broadcast(id: id, text: text)
+
+        when:
+        ResponseEntity<String> response = controller.byId(id)
+
+        then:
+        1 * repository.findOne(id) >> broadcast
+
+        and:
+        response.statusCode == HttpStatus.OK
+        response.body == text
+    }
+
+    void "should throw a broadcast exception for an invalid id"() {
+        given:
+        def invalidId = 0
+        repository.findOne(invalidId) >> null
+
+        when:
+        controller.byId(invalidId)
+
+        then:
+        thrown BroadcastException
     }
 
     void "should successfully return the current broadcast message from the repo"() {

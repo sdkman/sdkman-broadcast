@@ -1,5 +1,6 @@
 package net.gvmtool.controller
 
+import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.service.TextRenderService
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,9 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 
 import static org.springframework.data.domain.Sort.Direction.DESC
 import static org.springframework.web.bind.annotation.RequestMethod.GET
@@ -41,4 +40,17 @@ class BroadcastController {
         new ResponseEntity<String>(text, HttpStatus.OK)
     }
 
+    @RequestMapping(value = "/broadcast/{id}", produces = "text/plain", method = GET)
+    @ResponseBody
+    ResponseEntity<String> byId(@PathVariable int id) {
+        def broadcast = repository.findOne(id)
+        if (!broadcast) throw new BroadcastException("Not found")
+        new ResponseEntity<String>(broadcast.text, HttpStatus.OK)
+    }
+
+    @ExceptionHandler(BroadcastException)
+    @ResponseBody
+    ResponseEntity handle(BroadcastException be) {
+        new ResponseEntity(be.message, HttpStatus.NOT_FOUND)
+    }
 }

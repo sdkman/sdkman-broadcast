@@ -1,10 +1,21 @@
 Feature: Broadcast
 
-  Scenario: Identify the latest Broadcast
+  Scenario: Identify the latest Broadcast message
     Given the message "Groovy 2.3.0!" on the date "May 12, 2014" with id "12345"
     And the message "Groovy 2.3.0-rc-1." on the date "May 11, 2014" with id "12344"
     When the identifier of the latest broadcast message is requested
     Then the identifier is "12345"
+
+  Scenario: Broadcast an existing message by Identifier
+    Given the message "Groovy 2.3.0!" on the date "May 12, 2014" with id "12345"
+    When a broadcast message is requested by identifier "12345"
+    Then the broadcast message "Groovy 2.3.0!" is received
+    And an "OK" status is returned
+
+  Scenario: Broadcast a message by invalid Identifier
+    When a broadcast message is requested by identifier "999999999"
+    Then a "Not Found" message is received
+    And a "NOT_FOUND" status is returned
 
   Scenario: Broadcast a message
     Given the message "Welcome to GVM!"

@@ -22,7 +22,7 @@ class MongoHelper {
     static insertBroadcastInDb(DB db, String broadcast, Date date = new Date(), uid = id.getAndIncrement()){
         def collection  = db.getCollection("broadcast")
         BasicDBObjectBuilder builder = start()
-            .add("_id", uid.toString())
+            .add("_id", uid)
             .add("text", broadcast)
             .add("date", date)
         collection.insert(builder.get())
