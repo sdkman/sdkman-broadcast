@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE"
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.1.0'
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
     }
@@ -25,8 +25,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy:2.2.2"
-    compile "org.springframework.boot:spring-boot-starter-web:1.0.0.RELEASE"
+    compile "org.codehaus.groovy:groovy:2.3.2"
+    compile "org.springframework.boot:spring-boot-starter-web:1.0.2.RELEASE"
     compile "org.springframework.data:spring-data-commons:1.7.1.RELEASE"
     compile "org.springframework.data:spring-data-mongodb:1.4.1.RELEASE"
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
