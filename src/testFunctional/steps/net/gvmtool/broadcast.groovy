@@ -26,11 +26,11 @@ And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String
 
 //act
 
-And(~'^the identifier of the latest broadcast message is requested$') { ->
+And(~'^the identifier of the latest message is requested$') { ->
     response = restClient.get(path: "/broadcast/id").text
 }
 
-And(~'^a broadcast message is requested by identifier "([^"]*)"$') { String id ->
+And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     try {
         httpResponse = restClient.get(path: "/broadcast/$id")
         response = httpResponse.text
@@ -43,27 +43,27 @@ And(~'^a broadcast message is requested by identifier "([^"]*)"$') { String id -
     }
 }
 
-And(~'^the latest broadcast message is requested$') { ->
+And(~'^the latest message is requested$') { ->
     response = restClient.get(path: "/broadcast").text
 }
 
-And(~'^the latest "([^"]*)" broadcast messages are requested$') { String limit ->
+And(~'^the latest "([^"]*)" messages are requested$') { String limit ->
     response = restClient.get(path: "/broadcast?limit=${limit}").text
 }
 
 
 //assert
 
-And(~'^the broadcast message "([^"]*)" is received$') { String message ->
+And(~'^the message "([^"]*)" is received$') { String message ->
     assert response.contains(message)
 }
 
-And(~'^the broadcast message "([^"]*)" is received "([^"]*)"$') { String message, String order ->
+And(~'^the message "([^"]*)" is received "([^"]*)"$') { String message, String order ->
     def lines = response.readLines()
     assert lines[lineOrder[order]] == message
 }
 
-And(~'^the broadcast message "([^"]*)" has not been received$') { String message ->
+And(~'^the message "([^"]*)" has not been received$') { String message ->
     def lines = response.readLines()
     assert !lines.contains(message)
 }
