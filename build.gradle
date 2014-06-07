@@ -3,9 +3,7 @@ import com.wiredforcode.gradle.spawn.SpawnProcessTask
 
 buildscript {
     repositories {
-        mavenCentral()
-        maven { url "http://repo.spring.io/libs-snapshot" }
-        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
+        jcenter()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RELEASE"
