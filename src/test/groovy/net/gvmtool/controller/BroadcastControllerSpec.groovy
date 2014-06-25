@@ -1,6 +1,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
+import net.gvmtool.domain.BroadcastId
 import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.service.TextRenderService
@@ -31,14 +32,14 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast]
 
         when:
-        ResponseEntity<Broadcast> response = controller.latestId()
+        ResponseEntity<BroadcastId> response = controller.latestId()
 
         then:
         1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
 
         and:
         response.statusCode == HttpStatus.OK
-        response.body.id == id
+        response.body.value == id
     }
 
     void "should return a broadcast exception if no latest broadcast message is available"() {

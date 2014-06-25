@@ -1,6 +1,6 @@
 package net.gvmtool.controller
 
-import net.gvmtool.domain.Broadcast
+import net.gvmtool.domain.BroadcastId
 import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.service.TextRenderService
@@ -28,11 +28,11 @@ class BroadcastController {
 
     @RequestMapping(value = "/broadcast/id", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
-    ResponseEntity<Broadcast> latestId() {
+    ResponseEntity<BroadcastId> latestId() {
         def pageRequest = new PageRequest(0, 1, DESC, "date")
         def page = repository.findAll(pageRequest)
         def broadcast = valid(page.content.collect { it }).first()
-        new ResponseEntity<Broadcast>(broadcast, OK)
+        new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
 
     @RequestMapping(value = "/broadcast", produces = "text/plain", method = GET)

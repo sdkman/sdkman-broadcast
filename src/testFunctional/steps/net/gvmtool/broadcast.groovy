@@ -8,7 +8,6 @@ import static db.MongoHelper.insertBroadcastInDb
 lineOrder = ["first": 1, "second": 2, "third": 3, "forth": 4, "fifth": 5]
 statusCodes = [200: "OK", 404: "NOT_FOUND"]
 
-
 //arrange
 
 And(~'^the message "([^"]*)"$') { String message ->
@@ -23,11 +22,10 @@ And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String
     insertBroadcastInDb(db, message, date, id)
 }
 
-
 //act
 
 And(~'^the identifier of the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast/id").text
+    response = restClient.get(path: "/broadcast/id").contentAsString
 }
 
 And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
@@ -50,7 +48,6 @@ And(~'^the latest message is requested$') { ->
 And(~'^the latest "([^"]*)" messages are requested$') { String limit ->
     response = restClient.get(path: "/broadcast?limit=${limit}").text
 }
-
 
 //assert
 

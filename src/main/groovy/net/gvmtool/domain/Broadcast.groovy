@@ -12,4 +12,8 @@ class Broadcast {
     String toString(){
         text
     }
+
+    BroadcastId toBroadcastId(){
+        new BroadcastId(value: id)
+    }
 }
