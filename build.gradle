@@ -54,7 +54,7 @@ sourceSets {
 }
 
 task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
-    command "java -jar ${projectDir}/build/libs/sdk-manager-api.jar"
+    command "java -jar ${projectDir}/build/libs/${project.name}.jar"
     ready 'Started Application'
 }
 
