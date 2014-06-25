@@ -2,4 +2,4 @@
 .gradletasknamecache
 .idea
 build
-sdk-manager-api.iml
+*.iml
