@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*
 import static org.springframework.data.domain.Sort.Direction.DESC
 import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 import static org.springframework.web.bind.annotation.RequestMethod.GET
 
 @Controller
@@ -24,7 +26,7 @@ class BroadcastController {
     @Autowired
     BroadcastRepository repository
 
-    @RequestMapping(value = "/broadcast/id", produces = "text/plain", method = GET)
+    @RequestMapping(value = "/broadcast/id", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
     ResponseEntity<Broadcast> latestId() {
         def pageRequest = new PageRequest(0, 1, DESC, "date")
