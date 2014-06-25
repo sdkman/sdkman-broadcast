@@ -7,6 +7,9 @@ import static db.MongoHelper.*
 
 def BASE_URL = "http://localhost:8080"
 restClient = new RESTClient(BASE_URL)
+restClient.defaultAcceptHeader = "text/plain"
+restClient.defaultContentTypeHeader = "text/plain"
+restClient.defaultCharset = "UTF-8"
 
 if(!binding.hasVariable("db")) {
     db = prepareDB()
