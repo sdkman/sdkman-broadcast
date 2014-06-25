@@ -31,14 +31,31 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast]
 
         when:
-        ResponseEntity<String> response = controller.latestId()
+        ResponseEntity<Broadcast> response = controller.latestId()
 
         then:
         1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
 
         and:
         response.statusCode == HttpStatus.OK
-        response.body == id.toString()
+        response.body.id == id
+    }
+
+    void "should return a broadcast exception if no latest broadcast message is available"() {
+        given:
+        def broadcastPage = Stub(Page)
+
+        and:
+        broadcastPage.getContent() >> []
+
+        when:
+        controller.latestId()
+
+        then:
+        1 * repository.findAll({it.pageSize == 1}) >> broadcastPage
+
+        and:
+        thrown BroadcastException
     }
 
     void "should return a single broadcast for a valid id"() {
