@@ -67,14 +67,14 @@ class BroadcastControllerSpec extends Specification {
         def broadcast = new Broadcast(id: id, text: text)
 
         when:
-        ResponseEntity<String> response = controller.byId(id)
+        ResponseEntity<Broadcast> response = controller.byId(id)
 
         then:
         1 * repository.findOne(id) >> broadcast
 
         and:
         response.statusCode == HttpStatus.OK
-        response.body == text
+        response.body.text == text
     }
 
     void "broadcast by id should throw a broadcast exception for an invalid id"() {

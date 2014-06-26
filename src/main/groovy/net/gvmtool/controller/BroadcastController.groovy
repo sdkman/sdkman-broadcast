@@ -1,5 +1,6 @@
 package net.gvmtool.controller
 
+import net.gvmtool.domain.Broadcast
 import net.gvmtool.domain.BroadcastId
 import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
@@ -44,11 +45,11 @@ class BroadcastController {
         new ResponseEntity<String>(text, OK)
     }
 
-    @RequestMapping(value = "/broadcast/{id}", produces = "text/plain", method = GET)
+    @RequestMapping(value = "/broadcast/{id}", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
-    ResponseEntity<String> byId(@PathVariable int id) {
+    ResponseEntity<Broadcast> byId(@PathVariable int id) {
         def broadcast = valid(repository.findOne(id))
-        new ResponseEntity<String>(broadcast.text, OK)
+        new ResponseEntity<Broadcast>(broadcast, OK)
     }
 
     private valid(def broadcast) {

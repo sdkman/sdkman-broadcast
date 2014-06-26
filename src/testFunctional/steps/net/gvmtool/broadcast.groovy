@@ -31,7 +31,7 @@ And(~'^the identifier of the latest message is requested$') { ->
 And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     try {
         httpResponse = restClient.get(path: "/broadcast/$id")
-        response = httpResponse.text
+        response = httpResponse.contentAsString
         statusCode = httpResponse.statusCode
 
     } catch (RESTClientException re) {
