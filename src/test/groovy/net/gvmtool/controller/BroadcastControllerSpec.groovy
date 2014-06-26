@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
+import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 class BroadcastControllerSpec extends Specification {
@@ -132,6 +133,19 @@ class BroadcastControllerSpec extends Specification {
 
         and:
         !lines.contains(broadcast3.text)
+    }
+
+    void "should respond with not found in case of broadcast exception"() {
+        given:
+        def message = "Some message"
+        def be = new BroadcastException(message)
+
+        when:
+        ResponseEntity response = controller.handle(be)
+
+        then:
+        response.statusCode == NOT_FOUND
+        response.body == message
     }
 
 }
