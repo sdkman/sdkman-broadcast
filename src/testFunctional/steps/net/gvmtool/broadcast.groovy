@@ -25,13 +25,13 @@ And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String
 //act
 
 And(~'^the identifier of the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast/latest/id").contentAsString
+    response = restClient.get(path: "/broadcast/latest/id").text
 }
 
 And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     try {
         httpResponse = restClient.get(path: "/broadcast/$id")
-        response = httpResponse.contentAsString
+        response = httpResponse.text
         statusCode = httpResponse.statusCode
 
     } catch (RESTClientException re) {

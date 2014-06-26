@@ -14,6 +14,8 @@ import static org.springframework.http.MediaType.*
 
 class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
 
+    static final String CONTENT_TYPE_HEADER = "Content-Type"
+
     @Autowired
     ObjectMapper objectMapper
 
@@ -50,12 +52,12 @@ class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
     }
 
     private writeBroadcastText(HttpOutputMessage message, Broadcast broadcast) {
-        message.headers.add "Content-Type", TEXT_PLAIN_VALUE
+        message.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
         message.body << broadcast.text
     }
 
     private writeBroadcastObject(HttpOutputMessage message, Broadcast broadcast) {
-        message.headers.add "Content-Type", APPLICATION_JSON
+        message.headers.add CONTENT_TYPE_HEADER, APPLICATION_JSON
         objectMapper.writeValue(message.body, broadcast)
     }
 }

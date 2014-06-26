@@ -13,8 +13,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.http.MediaType.TEXT_PLAIN
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 
 class BroadcastIdMessageConverter implements HttpMessageConverter<BroadcastId> {
+
+    static final String CONTENT_TYPE_HEADER = "Content-Type"
 
     @Autowired
     ObjectMapper objectMapper
@@ -41,20 +44,21 @@ class BroadcastIdMessageConverter implements HttpMessageConverter<BroadcastId> {
 
     @Override
     void write(BroadcastId broadcastId, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-        def os = outputMessage.body
-        if (contentType == MediaType.TEXT_PLAIN)
-            writeBroadcastText(os, broadcastId)
+        if (contentType == TEXT_PLAIN)
+            writeBroadcastText(outputMessage, broadcastId)
         else
-            writeBroadcastObject(os, broadcastId)
+            writeBroadcastObject(outputMessage, broadcastId)
         os.close()
         os.flush()
     }
 
-    private writeBroadcastText(OutputStream os, BroadcastId broadcastId) {
-        os << "$broadcastId.value"
+    private writeBroadcastText(HttpOutputMessage message, BroadcastId broadcastId) {
+        message.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
+        message.body << "$broadcastId.value"
     }
 
-    private writeBroadcastObject(OutputStream os, BroadcastId broadcastId) {
-        objectMapper.writeValue(os, broadcastId)
+    private writeBroadcastObject(HttpOutputMessage message, BroadcastId broadcastId) {
+        message.headers.add CONTENT_TYPE_HEADER, APPLICATION_JSON
+        objectMapper.writeValue(message.body, broadcastId)
     }
 }
