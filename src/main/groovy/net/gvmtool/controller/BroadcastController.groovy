@@ -26,7 +26,7 @@ class BroadcastController {
     @Autowired
     BroadcastRepository repository
 
-    @RequestMapping(value = "/broadcast/id", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
+    @RequestMapping(value = "/broadcast/latest/id", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
     ResponseEntity<BroadcastId> latestId() {
         def pageRequest = new PageRequest(0, 1, DESC, "date")
@@ -35,9 +35,9 @@ class BroadcastController {
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
 
-    @RequestMapping(value = "/broadcast", produces = "text/plain", method = GET)
+    @RequestMapping(value = "/broadcast/latest", produces = "text/plain", method = GET)
     @ResponseBody
-    ResponseEntity<String> get(@RequestParam(value = "limit", defaultValue = "1") Integer limit) {
+    ResponseEntity<String> latest(@RequestParam(value = "limit", defaultValue = "1") Integer limit) {
         def pageRequest = new PageRequest(0, limit.intValue(), DESC, "date")
         def page = repository.findAll(pageRequest)
         def text = renderService.prepare(page.content.collect { it.text })

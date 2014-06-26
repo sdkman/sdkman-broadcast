@@ -25,7 +25,7 @@ And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String
 //act
 
 And(~'^the identifier of the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast/id").contentAsString
+    response = restClient.get(path: "/broadcast/latest/id").contentAsString
 }
 
 And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
@@ -42,11 +42,11 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
 }
 
 And(~'^the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast").text
+    response = restClient.get(path: "/broadcast/latest").text
 }
 
 And(~'^the latest "([^"]*)" messages are requested$') { String limit ->
-    response = restClient.get(path: "/broadcast?limit=${limit}").text
+    response = restClient.get(path: "/broadcast/latest?limit=${limit}").text
 }
 
 //assert

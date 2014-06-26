@@ -23,7 +23,7 @@ class BroadcastControllerSpec extends Specification {
         controller = new BroadcastController(renderService: renderService, repository: repository)
     }
 
-    void "should successfully identify the latest broadcast message"() {
+    void "broadcast id for latest should successfully identify the latest broadcast message"() {
         given:
         def id = 12345
         def broadcast = new Broadcast(id: id)
@@ -43,7 +43,7 @@ class BroadcastControllerSpec extends Specification {
         response.body.value == id
     }
 
-    void "should return a broadcast exception if no latest broadcast message is available"() {
+    void "broadcast id for latest should return a broadcast exception if no latest broadcast message is available"() {
         given:
         def broadcastPage = Stub(Page)
 
@@ -60,7 +60,7 @@ class BroadcastControllerSpec extends Specification {
         thrown BroadcastException
     }
 
-    void "should return a single broadcast for a valid id"() {
+    void "broadcast by id should return a single broadcast for a valid id"() {
         given:
         def id = 1234
         def text = "some message"
@@ -77,7 +77,7 @@ class BroadcastControllerSpec extends Specification {
         response.body == text
     }
 
-    void "should throw a broadcast exception for an invalid id"() {
+    void "broadcast by id should throw a broadcast exception for an invalid id"() {
         given:
         def invalidId = 0
         repository.findOne(invalidId) >> null
@@ -89,7 +89,7 @@ class BroadcastControllerSpec extends Specification {
         thrown BroadcastException
     }
 
-    void "should successfully return the current broadcast message from the repo"() {
+    void "broadcast latest should successfully return the current broadcast message from the repo"() {
         given:
         def message = "Welcome to GVM!"
         def broadcast = new Broadcast(text: message, date: new Date())
@@ -99,7 +99,7 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast]
 
         when:
-        ResponseEntity<String> result = controller.get(1)
+        ResponseEntity<String> result = controller.latest(1)
 
         then:
         1 * repository.findAll({ it.pageSize == 1 }) >> broadcastPage
@@ -109,7 +109,7 @@ class BroadcastControllerSpec extends Specification {
         result.body.contains message
     }
 
-    void "should return a given number of latest broadcasts from the repo"() {
+    void "broadcast latest should return a given number of latest broadcasts from the repo"() {
         given:
         def limit = 2
         def broadcast1 = new Broadcast(text: "broadcast 1", date: new Date())
@@ -121,7 +121,7 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast1, broadcast2]
 
         when:
-        ResponseEntity<String> result = controller.get(limit)
+        ResponseEntity<String> result = controller.latest(limit)
         def lines = result.body.readLines()
 
         then:
