@@ -10,8 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.http.converter.HttpMessageNotWritableException
 
-import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.http.MediaType.TEXT_PLAIN
+import static org.springframework.http.MediaType.*
 
 class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
 
@@ -42,20 +41,21 @@ class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
     void write(Broadcast broadcast, MediaType contentType, HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
 
-        def os = outputMessage.body
         if (contentType == TEXT_PLAIN)
-            writeBroadcastText(os, broadcast)
+            writeBroadcastText(outputMessage, broadcast)
         else
-            writeBroadcastObject(os, broadcast)
+            writeBroadcastObject(outputMessage, broadcast)
         os.close()
         os.flush()
     }
 
-    private writeBroadcastText(OutputStream os, Broadcast broadcast) {
-        os << broadcast.text
+    private writeBroadcastText(HttpOutputMessage message, Broadcast broadcast) {
+        message.headers.add "Content-Type", TEXT_PLAIN_VALUE
+        message.body << broadcast.text
     }
 
-    private writeBroadcastObject(OutputStream os, Broadcast broadcast) {
-        objectMapper.writeValue(os, broadcast)
+    private writeBroadcastObject(HttpOutputMessage message, Broadcast broadcast) {
+        message.headers.add "Content-Type", APPLICATION_JSON
+        objectMapper.writeValue(message.body, broadcast)
     }
 }
