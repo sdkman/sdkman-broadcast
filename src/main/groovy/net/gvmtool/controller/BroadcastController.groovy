@@ -4,7 +4,6 @@ import net.gvmtool.domain.Broadcast
 import net.gvmtool.domain.BroadcastId
 import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
-import net.gvmtool.service.TextRenderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
@@ -22,9 +21,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET
 class BroadcastController {
 
     @Autowired
-    TextRenderService renderService
-
-    @Autowired
     BroadcastRepository repository
 
     @RequestMapping(value = "/broadcast/latest/id", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
@@ -36,13 +32,13 @@ class BroadcastController {
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
 
-    @RequestMapping(value = "/broadcast/latest", produces = "text/plain", method = GET)
+    @RequestMapping(value = "/broadcast/latest", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
-    ResponseEntity<String> latest(@RequestParam(value = "limit", defaultValue = "1") Integer limit) {
+    ResponseEntity<List<Broadcast>> latest(@RequestParam(value = "limit", defaultValue = "1") Integer limit) {
         def pageRequest = new PageRequest(0, limit.intValue(), DESC, "date")
         def page = repository.findAll(pageRequest)
-        def text = renderService.prepare(page.content.collect { it.text })
-        new ResponseEntity<String>(text, OK)
+        def broadcasts = page.content.collect { it }
+        new ResponseEntity<List<Broadcast>>(broadcasts, OK)
     }
 
     @RequestMapping(value = "/broadcast/{id}", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
@@ -52,7 +48,7 @@ class BroadcastController {
         new ResponseEntity<Broadcast>(broadcast, OK)
     }
 
-    private valid(def broadcast) {
+    private valid(broadcast) {
         if (!broadcast) throw new BroadcastException("Not Found.")
         else broadcast
     }

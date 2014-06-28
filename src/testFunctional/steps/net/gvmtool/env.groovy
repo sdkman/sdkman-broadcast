@@ -1,5 +1,6 @@
 package net.gvmtool
 
+import groovy.json.JsonSlurper
 import wslite.rest.RESTClient
 
 import static cucumber.api.groovy.Hooks.After
@@ -7,9 +8,7 @@ import static db.MongoHelper.*
 
 def BASE_URL = "http://localhost:8080"
 restClient = new RESTClient(BASE_URL)
-restClient.defaultAcceptHeader = "text/plain"
-restClient.defaultContentTypeHeader = "text/plain"
-restClient.defaultCharset = "UTF-8"
+slurper = new JsonSlurper()
 
 if(!binding.hasVariable("db")) {
     db = prepareDB()
