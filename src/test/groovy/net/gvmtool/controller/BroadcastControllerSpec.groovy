@@ -16,11 +16,10 @@ import static org.springframework.http.HttpStatus.OK
 class BroadcastControllerSpec extends Specification {
 
     BroadcastController controller
-    TextRenderer renderService = new TextRenderer()
     BroadcastRepository repository = Mock()
 
     void setup() {
-        controller = new BroadcastController(renderService: renderService, repository: repository)
+        controller = new BroadcastController(repository: repository)
     }
 
     void "broadcast id for latest should successfully identify the latest broadcast message"() {
