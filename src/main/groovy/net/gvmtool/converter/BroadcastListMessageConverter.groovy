@@ -12,8 +12,11 @@ import org.springframework.http.converter.HttpMessageNotWritableException
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 import static org.springframework.http.MediaType.TEXT_PLAIN
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 
 class BroadcastListMessageConverter implements HttpMessageConverter<List<Broadcast>> {
+
+    static final String CONTENT_TYPE_HEADER = "Content-Type"
 
     @Autowired
     TextRenderer renderer
@@ -42,6 +45,7 @@ class BroadcastListMessageConverter implements HttpMessageConverter<List<Broadca
     @Override
     void write(List<Broadcast> broadcasts, MediaType contentType, HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
+        outputMessage.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
         def os = outputMessage.body
         os << renderer.prepare(broadcasts)
         os.flush()

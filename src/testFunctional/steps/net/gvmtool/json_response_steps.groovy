@@ -24,6 +24,10 @@ And(~'^the json message is "(.*)"$') { String message ->
     assert json(response).text == message
 }
 
+And(~'^the content type is "([^"]*)"$') { String contentType ->
+    assert headers['Content-Type'] == contentType
+}
+
 private json(response) {
     slurper.parseText(response)
 }

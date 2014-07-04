@@ -11,8 +11,11 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.http.converter.HttpMessageNotWritableException
 
 import static org.springframework.http.MediaType.TEXT_PLAIN
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 
 class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
+
+    static final String CONTENT_TYPE_HEADER = "Content-Type"
 
     @Autowired
     TextRenderer renderer
@@ -33,14 +36,15 @@ class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
     }
 
     @Override
-    Broadcast read(Class<? extends Broadcast> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    Broadcast read(Class<? extends Broadcast> clazz, HttpInputMessage inputMessage)
+            throws IOException, HttpMessageNotReadableException {
         throw new RuntimeException("BroadcastMessage read conversions not implemented.")
     }
 
     @Override
     void write(Broadcast broadcast, MediaType contentType, HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
-
+        outputMessage.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
         def os = outputMessage.body
         os << renderer.prepare(broadcast)
         os.close()

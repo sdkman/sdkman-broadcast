@@ -39,6 +39,7 @@ private httpGet(restAction) {
         httpResponse = restAction()
         response = httpResponse.contentAsString
         statusCode = httpResponse.statusCode
+        headers = httpResponse.headers
 
     } catch (RESTClientException re) {
         httpResponse = re.response
