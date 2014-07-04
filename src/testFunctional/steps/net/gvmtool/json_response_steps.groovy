@@ -16,8 +16,8 @@ And(~'^the json message "([^"]*)" has not been received$') { String message ->
     assert !json(response).find { it.text == message }
 }
 
-And(~'^the json identifier is "(.*)"$') { int message ->
-    assert json(response).id == message
+And(~'^the json identifier is "(.*)"$') { int id ->
+    assert json(response).id == id
 }
 
 And(~'^the json message is "(.*)"$') { String message ->
