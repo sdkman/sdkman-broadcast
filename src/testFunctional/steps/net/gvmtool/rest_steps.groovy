@@ -3,27 +3,27 @@ import wslite.rest.RESTClientException
 import static cucumber.api.groovy.EN.And
 
 And(~'^the identifier of the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast/latest/id").contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest/id") })
 }
 
 And(~'^the identifier of the latest message is requested with "([^"]*)" header "([^"]*)"$') { String header, String value ->
-    response = restClient.get(path: "/broadcast/latest/id", headers: [(header): value]).contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest/id", headers: [(header): value]) })
 }
 
 And(~'^the latest message is requested$') { ->
-    response = restClient.get(path: "/broadcast/latest").contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest") })
 }
 
 And(~'^the latest message is requested with "([^"]*)" header "([^"]*)"$') { String header, String value ->
-    response = restClient.get(path: "/broadcast/latest", headers: [(header): value]).contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest", headers: [(header): value]) })
 }
 
 And(~'^the latest "([^"]*)" messages are requested$') { String limit ->
-    response = restClient.get(path: "/broadcast/latest?limit=${limit}").contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest?limit=${limit}") })
 }
 
 And(~'^the latest "([^"]*)" messages are requested with "([^"]*)" header "([^"]*)"$') { String limit, String header, String value ->
-    response = restClient.get(path: "/broadcast/latest?limit=${limit}", headers: [(header): value]).contentAsString
+    httpGet({ restClient.get(path: "/broadcast/latest?limit=${limit}", headers: [(header): value]) })
 }
 
 And(~'^a message is requested by identifier "([^"]*)" with "([^"]*)" header "([^"]*)"$') { String id, String header, String value ->
