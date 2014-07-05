@@ -44,10 +44,17 @@ class BroadcastMessageConverter implements HttpMessageConverter<Broadcast> {
     @Override
     void write(Broadcast broadcast, MediaType contentType, HttpOutputMessage outputMessage)
             throws IOException, HttpMessageNotWritableException {
-        outputMessage.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
-        def os = outputMessage.body
+        addContentTypeText outputMessage
+
+        def outputStream = outputMessage.body
+        output broadcast, outputStream
+    }
+
+    private output(Broadcast broadcast, OutputStream os) {
         os << renderer.prepare(broadcast)
-        os.close()
-        os.flush()
+    }
+
+    private addContentTypeText(message) {
+        message.headers.add CONTENT_TYPE_HEADER, TEXT_PLAIN_VALUE
     }
 }
