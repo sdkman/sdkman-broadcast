@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class BroadcastId {
     @JsonProperty("id")
-    BigInteger value
+    String value
 }

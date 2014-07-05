@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
 class Broadcast {
-    @Id BigInteger id
+    @Id String id
     String text
     Date date
 

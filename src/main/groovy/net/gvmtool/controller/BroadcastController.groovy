@@ -43,7 +43,7 @@ class BroadcastController {
 
     @RequestMapping(value = "/broadcast/{id}", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
-    ResponseEntity<Broadcast> byId(@PathVariable int id) {
+    ResponseEntity<Broadcast> byId(@PathVariable String id) {
         def broadcast = valid(repository.findOne(id))
         new ResponseEntity<Broadcast>(broadcast, OK)
     }

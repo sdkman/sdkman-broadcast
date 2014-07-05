@@ -24,7 +24,7 @@ class BroadcastControllerSpec extends Specification {
 
     void "broadcast id for latest should successfully identify the latest broadcast message"() {
         given:
-        def id = 12345
+        def id = "12345"
         def broadcast = new Broadcast(id: id)
         def broadcastPage = Stub(Page)
 
@@ -61,7 +61,7 @@ class BroadcastControllerSpec extends Specification {
 
     void "broadcast by id should return a single broadcast for a valid id"() {
         given:
-        def id = 1234
+        def id = "1234"
         def text = "some message"
         def broadcast = new Broadcast(id: id, text: text)
 
@@ -78,7 +78,7 @@ class BroadcastControllerSpec extends Specification {
 
     void "broadcast by id should throw a broadcast exception for an invalid id"() {
         given:
-        def invalidId = 0
+        def invalidId = "0"
         repository.findOne(invalidId) >> null
 
         when:
@@ -90,7 +90,7 @@ class BroadcastControllerSpec extends Specification {
 
     void "broadcast latest should successfully return the current broadcast message from the repo"() {
         given:
-        def id = 1234
+        def id = "1234"
         def date = new Date()
         def message = "Welcome to GVM!"
         def broadcast = new Broadcast(id: id, text: message, date: date)

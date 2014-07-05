@@ -9,6 +9,6 @@ And(~'^the message "([^"]*)" on the date "([^"]*)"$') { String message, Date dat
     insertBroadcastInDb(db, message, date)
 }
 
-And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String message, Date date, int id ->
+And(~'^the message "([^"]*)" on the date "([^"]*)" with id "([^"]*)"$') { String message, Date date, String id ->
     insertBroadcastInDb(db, message, date, id)
 }
