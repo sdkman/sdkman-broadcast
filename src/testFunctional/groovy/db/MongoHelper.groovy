@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObjectBuilder
 import com.mongodb.DB
 import com.mongodb.MongoClient
 import com.mongodb.WriteConcern
+import org.bson.types.ObjectId
 
 import java.util.concurrent.atomic.AtomicLong
 
@@ -26,6 +27,13 @@ class MongoHelper {
             .add("text", broadcast)
             .add("date", date)
         collection.insert(builder.get())
+    }
+
+    static readBroadcastById(DB db, String uid) {
+        def collection = db.getCollection("broadcast")
+        def objectId = new ObjectId(uid)
+        BasicDBObjectBuilder builder = start().add("_id", objectId)
+        collection.findOne(builder.get())
     }
 
     static dropCollectionFromDb(DB db, String collection){

@@ -79,4 +79,16 @@ class TextRendererSpec extends Specification {
         readLines[2] == FOOTER
     }
 
+    void "should compose a structured release message line"() {
+        given:
+        def candidate = "groovy"
+        def version = "2.3.0"
+
+        when:
+        String message = renderer.composeStructuredMessage(candidate, version)
+
+        then:
+        message == "Groovy 2.3.0 has been released."
+    }
+
 }

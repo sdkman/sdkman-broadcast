@@ -47,3 +47,13 @@ private httpGet(restAction) {
         statusCode = httpResponse.statusCode
     }
 }
+
+And(~'^the structured message is announced$') { ->
+    def httpResponse = restClient.post(path: "/announce") {
+        type "application/json"
+        json candidate: candidate, version: version
+    }
+    broadcastId = slurper.parseText(httpResponse.contentAsString).id
+    println "Broadcast ID: $broadcastId"
+    println "bye..."
+}

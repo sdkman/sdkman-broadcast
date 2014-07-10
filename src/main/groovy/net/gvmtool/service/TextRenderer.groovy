@@ -33,4 +33,8 @@ class TextRenderer {
         }
         output
     }
+
+    String composeStructuredMessage(String candidate, String version) {
+        "${candidate.toLowerCase().capitalize()} $version has been released."
+    }
 }
