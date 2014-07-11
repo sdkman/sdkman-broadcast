@@ -1,6 +1,6 @@
 package net.gvmtool.request
 
-class BroadcastRequest {
+class StructuredAnnounceRequest {
     String candidate
     String version
 }

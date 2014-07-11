@@ -2,7 +2,7 @@ package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
 import net.gvmtool.repo.BroadcastRepository
-import net.gvmtool.request.BroadcastRequest
+import net.gvmtool.request.StructuredAnnounceRequest
 import net.gvmtool.service.TextRenderer
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
@@ -21,7 +21,7 @@ class AnnounceControllerSpec extends Specification {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
-        def request = new BroadcastRequest(candidate: candidate, version: version)
+        def request = new StructuredAnnounceRequest(candidate: candidate, version: version)
 
         and:
         def structuredMessage = "Groovy 2.3.0 has been released."
@@ -38,7 +38,7 @@ class AnnounceControllerSpec extends Specification {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
-        def request = new BroadcastRequest(candidate: candidate, version: version)
+        def request = new StructuredAnnounceRequest(candidate: candidate, version: version)
 
         and:
         def broadcastId = "1234"
