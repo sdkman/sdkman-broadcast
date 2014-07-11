@@ -1,3 +1,5 @@
+import cucumber.api.PendingException
+
 import static cucumber.api.groovy.EN.And
 
 And(~'^has a single result$') { ->
@@ -25,7 +27,11 @@ And(~'^the json message is "(.*)"$') { String message ->
 }
 
 And(~'^the content type is "([^"]*)"$') { String contentType ->
-    assert headers['Content-Type'] == contentType
+    assert headers['Content-Type'].contains(contentType)
+}
+
+And(~'^a valid Broadcast Identifier is returned$') { ->
+    broadcastId = json(response).id
 }
 
 private json(response) {

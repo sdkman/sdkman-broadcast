@@ -1,10 +1,13 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
+import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
+import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
 import net.gvmtool.service.TextRenderer
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
 class AnnounceControllerSpec extends Specification {
@@ -17,7 +20,7 @@ class AnnounceControllerSpec extends Specification {
         controller = new AnnounceController(repository: repository, renderer: renderer)
     }
 
-    void "should render and save a structured broadcast message"() {
+    void "announce structured should render and save a structured broadcast message"() {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
@@ -34,7 +37,7 @@ class AnnounceControllerSpec extends Specification {
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
     }
 
-    void "should respond with a broadcast id after saving a structured message"() {
+    void "announce structured should respond with a broadcast id after saving"() {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
@@ -47,6 +50,37 @@ class AnnounceControllerSpec extends Specification {
 
         when:
         def response = controller.structured(request)
+
+        then:
+        response.statusCode == HttpStatus.OK
+        response.body.value == broadcastId
+    }
+
+    void "announce free form should save a free form message"() {
+        given:
+        def text = "message"
+        def request = new FreeFormAnnounceRequest(text: text)
+        def broadcast = new Broadcast(id: "1234", text: text)
+
+        when:
+        controller.freeForm(request)
+
+        then:
+        1 * repository.save({it.text == text}) >> broadcast
+    }
+
+    void "announce free form should return a broadcast id after saving"() {
+        given:
+        def text = "message"
+        def request = new FreeFormAnnounceRequest(text: text)
+        def broadcastId = "1234"
+        def broadcast = new Broadcast(id: broadcastId, text: text, date: new Date())
+
+        and:
+        repository.save(_) >> broadcast
+
+        when:
+        ResponseEntity<BroadcastId> response = controller.freeForm(request)
 
         then:
         response.statusCode == HttpStatus.OK

@@ -1,7 +1,5 @@
 package net.gvmtool
 
-import cucumber.api.PendingException
-
 import static cucumber.api.groovy.EN.And
 
 And(~'^a new message to be announced for "([^"]*)" version "([^"]*)"$') { String msgCandidate, String msgVersion ->
@@ -9,10 +7,6 @@ And(~'^a new message to be announced for "([^"]*)" version "([^"]*)"$') { String
     version = msgVersion
 }
 
-And(~'^a new message "([^"]*)" to be announced$') { String freeForm ->
-    message = freeForm
-}
-
 And(~'^a new free form message "([^"]*)" to be announced$') { String message ->
-    throw new PendingException()
+    freeForm = message
 }

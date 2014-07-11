@@ -3,6 +3,7 @@ package net.gvmtool.controller
 import net.gvmtool.domain.Broadcast
 import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
+import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
 import net.gvmtool.service.TextRenderer
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,11 +25,18 @@ class AnnounceController {
     @Autowired
     TextRenderer renderer
 
-    @RequestMapping(value = "/announce", method = POST)
+    @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request) {
         def message = renderer.composeStructuredMessage(request.candidate, request.version)
         def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
+        new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
+    }
+
+    @RequestMapping(value = "/announce/freeform", method = POST)
+    @ResponseBody
+    ResponseEntity<BroadcastId> freeForm(@RequestBody FreeFormAnnounceRequest request) {
+        def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
 }
