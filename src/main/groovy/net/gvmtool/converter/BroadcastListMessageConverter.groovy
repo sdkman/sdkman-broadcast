@@ -1,7 +1,7 @@
 package net.gvmtool.converter
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.service.TextRenderer
+import net.gvmtool.service.TextService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpOutputMessage
@@ -19,7 +19,7 @@ class BroadcastListMessageConverter implements HttpMessageConverter<List<Broadca
     static final String CONTENT_TYPE_HEADER = "Content-Type"
 
     @Autowired
-    TextRenderer renderer
+    TextService textService
 
     @Override
     boolean canRead(Class<?> clazz, MediaType mediaType) {
@@ -52,7 +52,7 @@ class BroadcastListMessageConverter implements HttpMessageConverter<List<Broadca
     }
 
     private output(List broadcasts, OutputStream os) {
-        os << renderer.prepare(broadcasts)
+        os << textService.prepare(broadcasts)
     }
 
     private addContentTypeText(message) {

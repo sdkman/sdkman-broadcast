@@ -5,7 +5,7 @@ import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
-import net.gvmtool.service.TextRenderer
+import net.gvmtool.service.TextService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
@@ -14,10 +14,10 @@ class AnnounceControllerSpec extends Specification {
 
     AnnounceController controller
     BroadcastRepository repository = Mock()
-    TextRenderer renderer = Mock()
+    TextService textService = Mock()
 
     void setup(){
-        controller = new AnnounceController(repository: repository, renderer: renderer)
+        controller = new AnnounceController(repository: repository, textService: textService)
     }
 
     void "announce structured should render and save a structured broadcast message"() {
@@ -33,7 +33,7 @@ class AnnounceControllerSpec extends Specification {
         controller.structured(request)
 
         then:
-        1 * renderer.composeStructuredMessage(candidate, version) >> structuredMessage
+        1 * textService.composeStructuredMessage(candidate, version) >> structuredMessage
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
     }
 
@@ -45,7 +45,7 @@ class AnnounceControllerSpec extends Specification {
 
         and:
         def broadcastId = "1234"
-        renderer.composeStructuredMessage(_, _) >> "some message"
+        textService.composeStructuredMessage(_, _) >> "some message"
         repository.save(_ as Broadcast) >> new Broadcast(id: broadcastId, text: "some message")
 
         when:

@@ -1,7 +1,7 @@
 package net.gvmtool.converter
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.service.TextRenderer
+import net.gvmtool.service.TextService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpOutputMessage
 import spock.lang.Specification
@@ -16,7 +16,7 @@ class BroadcastMessageConverterSpec extends Specification {
 
     void setup() {
         converter = new BroadcastMessageConverter()
-        converter.renderer = Stub(TextRenderer)
+        converter.textService = Stub(TextService)
     }
 
     void "should add plain text content header"() {

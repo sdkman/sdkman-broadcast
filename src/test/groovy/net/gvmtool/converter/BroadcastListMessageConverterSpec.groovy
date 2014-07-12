@@ -1,7 +1,7 @@
 package net.gvmtool.converter
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.service.TextRenderer
+import net.gvmtool.service.TextService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpOutputMessage
 import org.springframework.http.MediaType
@@ -13,11 +13,10 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE
 class BroadcastListMessageConverterSpec extends Specification {
 
     BroadcastListMessageConverter converter
-    TextRenderer renderer = Stub()
 
     void setup() {
         converter = new BroadcastListMessageConverter()
-        converter.renderer = renderer
+        converter.textService = Stub(TextService)
     }
 
     void "should add plain text content header"() {

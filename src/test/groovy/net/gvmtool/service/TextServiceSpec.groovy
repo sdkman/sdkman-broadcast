@@ -3,17 +3,17 @@ package net.gvmtool.service
 import net.gvmtool.domain.Broadcast
 import spock.lang.Specification
 
-import static net.gvmtool.service.TextRenderer.*
+import static net.gvmtool.service.TextService.*
 
-class TextRendererSpec extends Specification {
+class TextServiceSpec extends Specification {
 
-    TextRenderer renderer
+    TextService service
 
     Broadcast broadcast1 = new Broadcast(id: 1, text: "text1", date: new Date())
     Broadcast broadcast2 = new Broadcast(id: 2, text: "text2", date: new Date())
 
     void setup() {
-        renderer = new TextRenderer()
+        service = new TextService()
     }
 
     void "should add header line when preparing broadcast text"() {
@@ -21,7 +21,7 @@ class TextRendererSpec extends Specification {
         def broadcasts = [broadcast1, broadcast2]
 
         when:
-        def text = renderer.prepare(broadcasts)
+        def text = service.prepare(broadcasts)
         def firstLine = text.readLines().first()
 
         then:
@@ -33,7 +33,7 @@ class TextRendererSpec extends Specification {
         def broadcasts = [broadcast1, broadcast2]
 
         when:
-        def text = renderer.prepare(broadcasts)
+        def text = service.prepare(broadcasts)
         def lastLine = text.readLines().last()
 
         then:
@@ -45,7 +45,7 @@ class TextRendererSpec extends Specification {
         def broadcasts = [broadcast1, broadcast2]
 
         when:
-        def text = renderer.prepare(broadcasts)
+        def text = service.prepare(broadcasts)
         def readLines = text.readLines()
 
         then:
@@ -58,7 +58,7 @@ class TextRendererSpec extends Specification {
 
     void "should allow conversion of single broadcasts"() {
         when:
-        def text = renderer.prepare(broadcast1)
+        def text = service.prepare(broadcast1)
         def readLines = text.readLines()
 
         then:
@@ -70,7 +70,7 @@ class TextRendererSpec extends Specification {
 
     void "should render a friendly message if no broadcasts are passed in"() {
         when:
-        def text = renderer.prepare([])
+        def text = service.prepare([])
         def readLines = text.readLines()
 
         then:
@@ -85,7 +85,7 @@ class TextRendererSpec extends Specification {
         def version = "2.3.0"
 
         when:
-        String message = renderer.composeStructuredMessage(candidate, version)
+        String message = service.composeStructuredMessage(candidate, version)
 
         then:
         message == "Groovy 2.3.0 has been released."

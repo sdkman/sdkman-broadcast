@@ -7,7 +7,7 @@ import static java.text.DateFormat.SHORT
 import static java.text.DateFormat.getDateInstance
 
 @Service
-class TextRenderer {
+class TextService {
 
     static final HEADER = '==== BROADCAST ================================================================='
     static final FOOTER = '================================================================================'

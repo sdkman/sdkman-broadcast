@@ -5,7 +5,7 @@ import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
-import net.gvmtool.service.TextRenderer
+import net.gvmtool.service.TextService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -23,12 +23,12 @@ class AnnounceController {
     BroadcastRepository repository
 
     @Autowired
-    TextRenderer renderer
+    TextService textService
 
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request) {
-        def message = renderer.composeStructuredMessage(request.candidate, request.version)
+        def message = textService.composeStructuredMessage(request.candidate, request.version)
         def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
