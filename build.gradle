@@ -18,17 +18,17 @@ apply plugin: 'mongo'
 apply plugin: 'spawn'
 
 repositories {
-    maven {
-        mavenCentral()
-        url 'http://repo.spring.io/release'
-    }
+    jcenter()
+    maven { url 'http://repo.spring.io/release' }
 }
 
 dependencies {
     compile "org.codehaus.groovy:groovy:2.3.2"
     compile "org.springframework.boot:spring-boot-starter-web:1.0.2.RELEASE"
+    compile("org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE")
     compile "org.springframework.data:spring-data-commons:1.7.1.RELEASE"
     compile "org.springframework.data:spring-data-mongodb:1.4.1.RELEASE"
+    compile("org.springframework.security.oauth:spring-security-oauth2:2.0.1.RELEASE")
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
     testCompile 'cglib:cglib-nodep:3.1'

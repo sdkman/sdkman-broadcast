@@ -36,7 +36,7 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
 
 And(~'^the structured message is announced$') { ->
     http({
-        restClient.post(path: "/announce/struct") {
+        restClient.post(path: "/announce/struct", headers: ["Authorization": "Bearer $token"]) {
             type "application/json"
             json candidate: candidate, version: version
         }
@@ -45,7 +45,7 @@ And(~'^the structured message is announced$') { ->
 
 And(~'^the free form message is announced$') { ->
     http({
-        restClient.post(path: "/announce/freeform") {
+        restClient.post(path: "/announce/freeform", headers: ["Authorization": "Bearer $token"]) {
             type "application/json"
             json text: freeForm
         }

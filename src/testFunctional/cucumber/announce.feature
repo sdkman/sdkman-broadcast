@@ -1,5 +1,8 @@
 Feature: Announce
 
+  Background:
+    Given the user is Authorised and Authenticated to Announce
+
   Scenario: Announce a new Structured Message
     Given a new message to be announced for "groovy" version "2.3.0"
     When the structured message is announced
