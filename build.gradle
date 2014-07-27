@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE"
-        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.3.0'
+        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
     }
 }
@@ -71,3 +71,7 @@ task functionalTest(type: Test) {
 }
 
 check.dependsOn functionalTest
+
+mongo {
+	storageLocation = "${projectDir}/build/mongo"
+}
