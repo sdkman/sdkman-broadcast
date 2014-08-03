@@ -68,10 +68,6 @@ task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
 
 task stopServer(type: KillProcessTask)
 
-mongo {
-	storageLocation = "${projectDir}/.mongodb"
-}
-
 task functionalTest(type: Test) {
     testClassesDir = sourceSets.functionalTest.output.classesDir
     classpath = sourceSets.functionalTest.runtimeClasspath

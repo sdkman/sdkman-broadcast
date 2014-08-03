@@ -1,4 +1,1 @@
 language: groovy
-cache:
-    directories:
-    - .mongodb
