@@ -90,11 +90,11 @@ cloudfoundry {
     uri = envVariable("CF_URI")
     buildpack = "https://github.com/marcoVermeulen/java-buildpack"
     env = [
-        MONGO_HOST: envVariable("MONGO_HOST"),
-        MONGO_PORT: envVariable("MONGO_PORT"),
-        MONGO_DB_NAME: envVariable("MONGO_DB_NAME"),
-        MONGO_USERNAME: envVariable("MONGO_USERNAME"),
-        MONGO_PASSWORD: envVariable("MONGO_PASSWORD")
+        MONGO_HOST: envVariable("CF_MONGO_HOST"),
+        MONGO_PORT: envVariable("CF_MONGO_PORT"),
+        MONGO_DB_NAME: envVariable("CF_MONGO_DB_NAME"),
+        MONGO_USERNAME: envVariable("CF_MONGO_USERNAME"),
+        MONGO_PASSWORD: envVariable("CF_MONGO_PASSWORD")
     ]
 }
 
