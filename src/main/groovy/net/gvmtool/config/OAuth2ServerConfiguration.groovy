@@ -35,8 +35,8 @@ class OAuth2ServerConfiguration {
 
         void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                .regexMatchers(HttpMethod.POST, "/announce/.*")
-                .authenticated()
+                .regexMatchers(HttpMethod.POST, "/announce/.*").authenticated()
+                .regexMatchers(HttpMethod.GET, "/manage/((?!health).)*").authenticated()
         }
 
     }
