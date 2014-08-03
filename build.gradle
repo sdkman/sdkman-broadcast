@@ -9,12 +9,14 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE"
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.3'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
 apply plugin: 'spawn'
+apply plugin: 'cloudfoundry'
 
 repositories {
     jcenter()
@@ -74,3 +76,28 @@ task functionalTest(type: Test) {
 }
 
 check.dependsOn functionalTest
+
+cloudfoundry {
+    target = 'https://api.run.pivotal.io'
+    organization = envVariable("CF_ORG")
+    space = envVariable("CF_SPACE")
+	application = envVariable("CF_APP")
+    username = envVariable("CF_USERNAME")
+    password = envVariable("CF_PASSWORD")
+    file = file("${projectDir}/build/libs/${project.name}-${project.version}.jar")
+    domain = envVariable("CF_DOMAIN")
+    host = envVariable("CF_HOST")
+    uri = envVariable("CF_URI")
+    buildpack = "https://github.com/marcoVermeulen/java-buildpack"
+    env = [
+        MONGO_HOST: envVariable("MONGO_HOST"),
+        MONGO_PORT: envVariable("MONGO_PORT"),
+        MONGO_DB_NAME: envVariable("MONGO_DB_NAME"),
+        MONGO_USERNAME: envVariable("MONGO_USERNAME"),
+        MONGO_PASSWORD: envVariable("MONGO_PASSWORD")
+    ]
+}
+
+def envVariable(String envVar) {
+    System.getenv(envVar) ?: 'invalid'
+}
