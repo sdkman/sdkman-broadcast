@@ -1,5 +1,6 @@
 import com.wiredforcode.gradle.spawn.KillProcessTask
 import com.wiredforcode.gradle.spawn.SpawnProcessTask
+import org.apache.tools.ant.filters.*
 
 buildscript {
     repositories {
@@ -56,8 +57,12 @@ sourceSets {
     }
 }
 
+processResources {
+    filter ReplaceTokens, tokens: ["application.version": project.version]
+}
+
 task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
-    command "java -jar ${projectDir}/build/libs/${project.name}.jar"
+    command "java -jar ${projectDir}/build/libs/${project.name}-${project.version}.jar"
     ready 'Started Application'
 }
 
