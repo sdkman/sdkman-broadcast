@@ -29,7 +29,7 @@ class TextService {
     private buildMessage(broadcasts) {
         def output = ""
         broadcasts.each { broadcast ->
-            output += "* ${getDateInstance(SHORT).format(broadcast.date)}: $broadcast.text\n"
+            output += "* ${getDateInstance(SHORT, Locale.UK).format(broadcast.date)}: $broadcast.text\n"
         }
         output
     }
