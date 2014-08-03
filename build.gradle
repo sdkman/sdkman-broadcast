@@ -8,14 +8,12 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE"
-        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
-apply plugin: 'mongo'
 apply plugin: 'spawn'
 
 repositories {
@@ -71,12 +69,8 @@ task stopServer(type: KillProcessTask)
 task functionalTest(type: Test) {
     testClassesDir = sourceSets.functionalTest.output.classesDir
     classpath = sourceSets.functionalTest.runtimeClasspath
-    dependsOn startManagedMongoDb, startServer
+    dependsOn startServer
     finalizedBy stopServer
 }
 
 check.dependsOn functionalTest
-
-mongo {
-	storageLocation = "${projectDir}/build/mongo"
-}
