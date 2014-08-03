@@ -1,5 +1,6 @@
 .gradle
 .gradletasknamecache
 .idea
+.mongodb
 build
 *.iml
