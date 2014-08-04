@@ -100,10 +100,9 @@ cloudfoundry {
 
 def envVariableAsGlobal(String envVar, boolean global) {
     def env = global ? "" : determineEnvironment()
-    def value = "${System.getenv(envVar)}" ?: 'invalid'
-    "${value}${env}"
+    System.getenv("${envVar}${env}") ?: 'invalid'
 }
 
 def determineEnvironment() {
-    hasProperty("env") ? "_$env" : '_LOCAL'
+    hasProperty("env") ? "_${env.toUpperCase()}" : '_LOCAL'
 }
