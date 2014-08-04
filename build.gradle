@@ -78,26 +78,32 @@ task functionalTest(type: Test) {
 check.dependsOn functionalTest
 
 cloudfoundry {
-    target = 'https://api.run.pivotal.io'
-    organization = envVariable("CF_ORG")
-    space = envVariable("CF_SPACE")
-	application = envVariable("CF_APP")
-    username = envVariable("CF_USERNAME")
-    password = envVariable("CF_PASSWORD")
     file = file("${projectDir}/build/libs/${project.name}-${project.version}.jar")
-    domain = envVariable("CF_DOMAIN")
-    host = envVariable("CF_HOST")
-    uri = envVariable("CF_URI")
     buildpack = "https://github.com/marcoVermeulen/java-buildpack"
+    target = 'https://api.run.pivotal.io'
+    organization = envVariableAsGlobal("CF_ORG", true)
+    username = envVariableAsGlobal("CF_USERNAME", true)
+    password = envVariableAsGlobal("CF_PASSWORD", true)
+    space = envVariableAsGlobal("CF_SPACE", false)
+    application = envVariableAsGlobal("CF_APP", false)
+    domain = envVariableAsGlobal("CF_DOMAIN", true)
+    host = envVariableAsGlobal("CF_HOST", false)
+    uri = envVariableAsGlobal("CF_URI", false)
     env = [
-        MONGO_HOST: envVariable("CF_MONGO_HOST"),
-        MONGO_PORT: envVariable("CF_MONGO_PORT"),
-        MONGO_DB_NAME: envVariable("CF_MONGO_DB_NAME"),
-        MONGO_USERNAME: envVariable("CF_MONGO_USERNAME"),
-        MONGO_PASSWORD: envVariable("CF_MONGO_PASSWORD")
+        MONGO_HOST: envVariableAsGlobal("CF_MONGO_HOST", false),
+        MONGO_PORT: envVariableAsGlobal("CF_MONGO_PORT", false),
+        MONGO_DB_NAME: envVariableAsGlobal("CF_MONGO_DB_NAME", false),
+        MONGO_USERNAME: envVariableAsGlobal("CF_MONGO_USERNAME", false),
+        MONGO_PASSWORD: envVariableAsGlobal("CF_MONGO_PASSWORD", false)
     ]
 }
 
-def envVariable(String envVar) {
-    System.getenv(envVar) ?: 'invalid'
+def envVariableAsGlobal(String envVar, boolean global) {
+    def env = global ? "" : determineEnvironment()
+    def value = "${System.getenv(envVar)}" ?: 'invalid'
+    "${value}${env}"
+}
+
+def determineEnvironment() {
+    hasProperty("env") ? "_$env" : '_LOCAL'
 }
