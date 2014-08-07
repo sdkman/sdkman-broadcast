@@ -5,9 +5,10 @@ import org.apache.tools.ant.filters.*
 buildscript {
     repositories {
         jcenter()
+        maven { url "http://repo.spring.io/libs-release" }
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.4.RELEASE"
         classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
         classpath 'org.cloudfoundry:cf-gradle-plugin:1.0.3'
     }
@@ -24,13 +25,12 @@ repositories {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy:2.3.2"
-    compile "org.springframework.boot:spring-boot-starter-web:1.0.2.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-actuator:1.0.2.RELEASE"
-    compile "org.springframework.boot:spring-boot-starter-remote-shell:1.0.2.RELEASE"
-    compile("org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE")
-    compile "org.springframework.data:spring-data-commons:1.7.1.RELEASE"
-    compile "org.springframework.data:spring-data-mongodb:1.4.1.RELEASE"
+    compile "org.codehaus.groovy:groovy:2.3.6"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-remote-shell"
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.security.oauth:spring-security-oauth2:2.0.1.RELEASE")
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
