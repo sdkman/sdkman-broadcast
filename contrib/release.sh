@@ -15,8 +15,8 @@ git branch -D "$BRANCH"
 git checkout -b "$BRANCH"
 
 #update version
-sed -i "s/1.0.0-SNAPSHOT/$VERSION/g" build.gradle
-git add build.gradle
+sed -i "s/1.0.0-SNAPSHOT/$VERSION/g" gradle.properties
+git add gradle.properties
 git commit -m "Update version of $BRANCH to $VERSION"
 
 #push branch
