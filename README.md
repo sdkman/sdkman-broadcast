@@ -11,96 +11,38 @@ The default behaviour of the API is to return plain text responses which can be 
 it can also return JSON responses through content negotiation. By simply adding an `Accept` header of `application/json`
 to your request, you should see the results in a JSON document.
 
-## Available Endpoints
+## Interacting with the API
 
-Some endpoints are exposed publicly, while others require an authentication token.
+We have a [wiki page](https://github.com/gvmtool/gvm-broadcast-api/wiki/Public-Interface) detailing how to interact with
+the API from Curl. Feel free to adapt these examples for your own use.
 
-### Open Endpoints
+## Running it up locally
 
-The following endpoints do not require any authentication:
+You will need to have MongoDB up and running locally on the default port.
 
-#### Broadcast Related
+    $ mongod
 
-Gets the latest Broadcast Message available on the platform. Can also return more Messages by passing in a `limit`
-query parameter. When querying for multiple results, the order will always be in datetime descending.
+Once running, step into the project folder and run the tests.
+ 
+    $ ./gradlew clean build
 
-##### Plain Text Default
+We can now run the app up locally with a simple
 
-    $ curl -I http://hostname/broadcast/latest
-    
-    ==== BROADCAST =================================================================
-    * 07/08/14: Welcome to the brand new GVM Broadcast API!
-    ================================================================================%                               
+    $ java -jar build/libs/gvm-broadcast-api-1.0.0-SNAPSHOT.jar
 
-##### JSON with Accept Header
-    
-    $ curl -H "Accept:application/json" http://hostname/broadcast/latest
-    
-    [
-        {
-            "date": 1407451262797,
-            "id": "53e4007ef58edee9442471d6",
-            "text": "Welcome to the brand new GVM Broadcast API!"
-        }
-    ]
-    
-##### JSON using limit request parameter
-    
-    $ curl -H "Accept:application/json" http://hostname/broadcast/latest?limit=2
-    [
-        {
-            "date": 1407451263897,
-            "id": "93e90079f5ab12eda42941e3",
-            "text": "Groovy 2.4.0 has been released."
-        },
-        {
-            "date": 1407451262797,
-            "id": "53e4007ef58edee9442471d6",
-            "text": "Welcome to the brand new GVM Broadcast API!"
-        }
-    ]
+## Environment Variables
 
-##### Identify the latest broadcast message
+The application can be configured by using environment variables.
 
-    $ curl -H "Accept:application/json" http://hostname/broadcast/latest/id
+#### MongoDB
+`MONGO_HOST`: Host
+`MONGO_PORT`: Port
+`MONGO_DB_NAME`: Database Name
+`MONGO_USERNAME`: Username
+`MONGO_PASSWORD`: Password
 
-    {"id":"53e4007ef58edee9442471d6"}
-
-##### Retrieve broadcast messages by identifier
-
-    $ curl -H "Accept:application/json" http://hostname/broadcast/53e4007ef58edee9442471d6
-
-    {"id":"53e4007ef58edee9442471d6","text":"Welcome to the brand new GVM Broadcast API!","date":1407451262797}
-
-
-### Secured Endpoints
-
-#### Get authorisation token
-
-    $ curl -X POST -u client_id:client_secret \
-        https://hostname/oauth/token \
-        -H "Accept: application/json" \
-        -d "password=auth_password&username=auth_username&grant_type=password&scope=read%20write&client_secret=client_secret&client_id=client_id"
-    
-    {"access_token":"XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX","token_type":"bearer","expires_in":31698,"scope":"read write"}
-
-#### Announcement Related
-
-##### Announcing free-form message
-
-    $ curl -X POST -H "Content-Type: application/json" \
-        -H "Authorization:Bearer XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" \
-        -d '{"text":"Announcement made from curl."}' \
-        https://hostname/announce/freeform
-
-    {"id":"53ed20e3de2e3153bad84100"}
-
-##### Announcing new release candidates
-
-    $ curl -X POST -H "Content-Type: application/json" \
-        -H "Authorization:Bearer XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" \
-        -d '{"candidate":"Groovy.", "version":"2.4.0"}' \
-        https://cast-dev.cfapps.io/announce/struct
-
-    {"id":"53ed2162de2e3153bad84101"}
-    
+#### OAuth
+`CLIENT_ID`: Client Application Id
+`CLIENT_SECRET`: Client Application Secret
+`AUTH_USERNAME`: Admin Authentication Username
+`AUTH_PASSWORD`: Admin Authentication Password
