@@ -35,14 +35,23 @@ We can now run the app up locally with a simple
 The application can be configured by using environment variables.
 
 #### MongoDB
+
 `MONGO_HOST`: Host
+
 `MONGO_PORT`: Port
+
 `MONGO_DB_NAME`: Database Name
+
 `MONGO_USERNAME`: Username
+
 `MONGO_PASSWORD`: Password
 
 #### OAuth
+
 `CLIENT_ID`: Client Application Id
+
 `CLIENT_SECRET`: Client Application Secret
+
 `AUTH_USERNAME`: Admin Authentication Username
+
 `AUTH_PASSWORD`: Admin Authentication Password
