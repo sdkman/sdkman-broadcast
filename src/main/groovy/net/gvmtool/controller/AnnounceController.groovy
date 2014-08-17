@@ -34,7 +34,7 @@ class AnnounceController {
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request) {
         def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
-        twitterService.tweet(message)
+        twitterService.update(message)
         def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
@@ -42,7 +42,7 @@ class AnnounceController {
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> freeForm(@RequestBody FreeFormAnnounceRequest request) {
-        twitterService.tweet(request.text)
+        twitterService.update(request.text)
         def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }

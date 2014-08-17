@@ -96,7 +96,7 @@ class AnnounceControllerSpec extends Specification {
         controller.structured(request)
 
         then:
-        1 * twitterService.tweet(status)
+        1 * twitterService.update(status)
     }
 
     void "announce free form should save a free form message"() {
@@ -145,7 +145,7 @@ class AnnounceControllerSpec extends Specification {
         controller.freeForm(request)
 
         then:
-        1 * twitterService.tweet(status)
+        1 * twitterService.update(status)
     }
 
 }
