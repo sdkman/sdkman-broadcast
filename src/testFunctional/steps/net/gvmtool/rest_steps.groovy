@@ -38,7 +38,7 @@ And(~'^the structured message is announced$') { ->
     http({
         restClient.post(path: "/announce/struct", headers: ["Authorization": "Bearer $token"]) {
             type "application/json"
-            json candidate: candidate, version: version
+            json candidate: candidate, version: version, hashtag: hashtag
         }
     })
 }

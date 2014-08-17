@@ -27,16 +27,17 @@ class AnnounceControllerSpec extends Specification {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
-        def request = new StructuredAnnounceRequest(candidate: candidate, version: version)
+        def hashtag = "groovylang"
+        def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
         and:
-        def structuredMessage = "Groovy 2.3.0 has been released."
+        def structuredMessage = "Groovy 2.3.0 has been released on GVM."
 
         when:
         controller.structured(request)
 
         then:
-        1 * textService.composeStructuredMessage(candidate, version) >> structuredMessage
+        1 * textService.composeStructuredMessage(candidate, version, hashtag) >> structuredMessage
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
     }
 
@@ -44,11 +45,12 @@ class AnnounceControllerSpec extends Specification {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
-        def request = new StructuredAnnounceRequest(candidate: candidate, version: version)
+        def hashtag = "groovylang"
+        def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
         and:
         def broadcastId = "1234"
-        textService.composeStructuredMessage(_, _) >> "some message"
+        textService.composeStructuredMessage(_, _, _) >> "some message"
         repository.save(_ as Broadcast) >> new Broadcast(id: broadcastId, text: "some message")
 
         when:
@@ -61,8 +63,8 @@ class AnnounceControllerSpec extends Specification {
 
     void "announce structured should post to twitter"() {
         given:
-        def status = "Groovy 2.4.0 has been released."
-        def request = new StructuredAnnounceRequest(candidate: "groovy", version: "2.4.0")
+        def status = "Groovy 2.4.0 has been released on GVM. #groovylang"
+        def request = new StructuredAnnounceRequest(candidate: "groovy", version: "2.4.0", hashtag: "groovylang")
         def broadcast = new Broadcast(id: "1234", text: status, date: new Date())
 
         and:
@@ -70,7 +72,7 @@ class AnnounceControllerSpec extends Specification {
 
         and:
         repository.save(_) >> broadcast
-        textService.composeStructuredMessage(_, _) >> status
+        textService.composeStructuredMessage(_, _, _) >> status
 
         when:
         controller.structured(request)

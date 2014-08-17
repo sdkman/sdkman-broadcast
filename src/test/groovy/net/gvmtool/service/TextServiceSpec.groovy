@@ -83,12 +83,34 @@ class TextServiceSpec extends Specification {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
+        def hashtag = "groovylang"
 
         when:
-        String message = service.composeStructuredMessage(candidate, version)
+        String message = service.composeStructuredMessage(candidate, version, hashtag)
 
         then:
-        message == "Groovy 2.3.0 has been released."
+        message == "Groovy 2.3.0 has been released on GVM. #groovylang"
     }
 
+    void "should compose a structured release message ignoring a # in the hashtag"() {
+        given:
+        def hashtag = "#groovylang"
+
+        when:
+        String message = service.composeStructuredMessage("", "", hashtag)
+
+        then:
+        message.contains " #groovylang"
+    }
+
+    void "should compose a structured release message including a # in the hashtag"() {
+        given:
+        def hashtag = "groovylang"
+
+        when:
+        String message = service.composeStructuredMessage("", "", hashtag)
+
+        then:
+        message.contains " #groovylang"
+    }
 }

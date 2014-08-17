@@ -33,7 +33,7 @@ class AnnounceController {
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request) {
-        def message = textService.composeStructuredMessage(request.candidate, request.version)
+        def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
         tweetInPool(message)
         def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
