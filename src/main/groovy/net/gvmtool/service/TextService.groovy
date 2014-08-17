@@ -34,7 +34,7 @@ class TextService {
         output
     }
 
-    String composeStructuredMessage(String candidate, String version, String hashtag) {
+    String composeStructuredMessage(String candidate, String version, String hashtag = candidate) {
         def prefixedHashtag = hashtag.startsWith("#") ? hashtag : "#$hashtag"
         "${candidate.toLowerCase().capitalize()} $version has been released on GVM. $prefixedHashtag"
     }

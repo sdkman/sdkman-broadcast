@@ -113,4 +113,12 @@ class TextServiceSpec extends Specification {
         then:
         message.contains " #groovylang"
     }
+
+    void "should compose a structured release message with default hashtag if not provided"() {
+        when:
+        String message = service.composeStructuredMessage("groovy", "2.0.4")
+
+        then:
+        message.contains " #groovy"
+    }
 }
