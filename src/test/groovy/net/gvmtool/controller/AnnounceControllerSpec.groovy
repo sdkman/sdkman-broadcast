@@ -6,6 +6,7 @@ import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
 import net.gvmtool.service.TextService
+import net.gvmtool.service.TwitterService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.social.twitter.api.TimelineOperations
@@ -17,13 +18,13 @@ class AnnounceControllerSpec extends Specification {
     AnnounceController controller
     BroadcastRepository repository = Mock()
     TextService textService = Mock()
-    TwitterTemplate twitter = Mock()
+    TwitterService twitterService = Mock()
 
     void setup(){
-        controller = new AnnounceController(repository: repository, textService: textService, twitter: twitter)
+        controller = new AnnounceController(repository: repository, textService: textService, twitterService: twitterService)
     }
 
-    void "announce structured should render and save a structured broadcast message"() {
+    void "announce structured should compose a structured broadcast message"() {
         given:
         def candidate = "groovy"
         def version = "2.3.0"
@@ -31,13 +32,33 @@ class AnnounceControllerSpec extends Specification {
         def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
         and:
-        def structuredMessage = "Groovy 2.3.0 has been released on GVM."
+        def structuredMessage = "Groovy 2.3.0 has been released on GVM. #groovylang"
+
+        and:
+        repository.save(_) >> new Broadcast(id: "1234")
 
         when:
         controller.structured(request)
 
         then:
         1 * textService.composeStructuredMessage(candidate, version, hashtag) >> structuredMessage
+    }
+
+    void "announce structured should save a structured broadcast message"() {
+        given:
+        def candidate = "groovy"
+        def version = "2.3.0"
+        def hashtag = "groovylang"
+        def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
+
+        and:
+        def structuredMessage = "Groovy 2.3.0 has been released on GVM. #groovylang"
+        textService.composeStructuredMessage(_, _, _) >> structuredMessage
+
+        when:
+        controller.structured(request)
+
+        then:
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
     }
 
@@ -61,14 +82,11 @@ class AnnounceControllerSpec extends Specification {
         response.body.value == broadcastId
     }
 
-    void "announce structured should post to twitter"() {
+    void "announce structured should post a structured message to twitter"() {
         given:
-        def status = "Groovy 2.4.0 has been released on GVM. #groovylang"
         def request = new StructuredAnnounceRequest(candidate: "groovy", version: "2.4.0", hashtag: "groovylang")
+        def status = "Groovy 2.4.0 has been released on GVM. #groovylang"
         def broadcast = new Broadcast(id: "1234", text: status, date: new Date())
-
-        and:
-        def timelineOperations = Mock(TimelineOperations)
 
         and:
         repository.save(_) >> broadcast
@@ -78,8 +96,7 @@ class AnnounceControllerSpec extends Specification {
         controller.structured(request)
 
         then:
-        1 * twitter.timelineOperations() >> timelineOperations
-        1 * timelineOperations.updateStatus(status)
+        1 * twitterService.tweet(status)
     }
 
     void "announce free form should save a free form message"() {
@@ -87,9 +104,6 @@ class AnnounceControllerSpec extends Specification {
         def text = "message"
         def request = new FreeFormAnnounceRequest(text: text)
         def broadcast = new Broadcast(id: "1234", text: text)
-
-        and:
-        twitter.timelineOperations() >> Mock(TimelineOperations)
 
         when:
         controller.freeForm(request)
@@ -102,12 +116,13 @@ class AnnounceControllerSpec extends Specification {
         given:
         def text = "message"
         def request = new FreeFormAnnounceRequest(text: text)
+
+        and:
         def broadcastId = "1234"
         def broadcast = new Broadcast(id: broadcastId, text: text, date: new Date())
 
         and:
         repository.save(_) >> broadcast
-        twitter.timelineOperations() >> Mock(TimelineOperations)
 
         when:
         ResponseEntity<BroadcastId> response = controller.freeForm(request)
@@ -117,14 +132,11 @@ class AnnounceControllerSpec extends Specification {
         response.body.value == broadcastId
     }
 
-    void "announce free form should post to twitter"() {
+    void "announce free form should post a free-form message to twitter"() {
         given:
         def status = "status"
         def request = new FreeFormAnnounceRequest(text: status)
         def broadcast = new Broadcast(id: "1234", text: status, date: new Date())
-
-        and:
-        def timelineOperations = Mock(TimelineOperations)
 
         and:
         repository.save(_) >> broadcast
@@ -133,8 +145,7 @@ class AnnounceControllerSpec extends Specification {
         controller.freeForm(request)
 
         then:
-        1 * twitter.timelineOperations() >> timelineOperations
-        1 * timelineOperations.updateStatus(status)
+        1 * twitterService.tweet(status)
     }
 
 }

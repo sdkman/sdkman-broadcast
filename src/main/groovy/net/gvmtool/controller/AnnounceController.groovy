@@ -1,12 +1,12 @@
 package net.gvmtool.controller
 
-import groovyx.gpars.GParsPool
 import net.gvmtool.domain.Broadcast
 import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
 import net.gvmtool.service.TextService
+import net.gvmtool.service.TwitterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.social.twitter.api.impl.TwitterTemplate
@@ -28,13 +28,13 @@ class AnnounceController {
     TextService textService
 
     @Autowired
-    TwitterTemplate twitter
+    TwitterService twitterService
 
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request) {
         def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
-        tweetInPool(message)
+        twitterService.tweet(message)
         def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
@@ -42,13 +42,8 @@ class AnnounceController {
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> freeForm(@RequestBody FreeFormAnnounceRequest request) {
-        tweetInPool(request.text)
+        twitterService.tweet(request.text)
         def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
         new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
     }
-
-    def tweet = { status -> twitter.timelineOperations().updateStatus(status) }
-
-    def tweetInPool = { status -> GParsPool.withPool() { tweet.async()(status) } }
-
 }
