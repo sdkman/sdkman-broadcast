@@ -55,3 +55,13 @@ The application can be configured by using environment variables.
 `AUTH_USERNAME`: Admin Authentication Username
 
 `AUTH_PASSWORD`: Admin Authentication Password
+
+#### Twitter
+
+`TWITTER_CONSUMER_KEY`: Twitter Consumer Key
+
+`TWITTER_CONSUMER_SECRET`: Twitter Consumer Secret
+
+`TWITTER_ACCESS_TOKEN`: Twitter Access Token
+
+`TWITTER_ACCESS_TOKEN_SECRET`: Twitter Access Token Secret
