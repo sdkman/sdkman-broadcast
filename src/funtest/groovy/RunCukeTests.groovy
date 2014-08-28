@@ -5,7 +5,7 @@ import org.junit.runner.RunWith
 @Cucumber.Options(
 	format=["pretty", "html:build/reports/cucumber"],
 	strict=true,
-	features=["src/funtest/cucumber"],
+	features=["features"],
 	glue=["src/funtest/steps"],
 	tags=["~@manual", "~@review"]
 )
