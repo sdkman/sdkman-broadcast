@@ -3,10 +3,14 @@ package net.gvmtool.config
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
@@ -18,7 +22,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
 
 @Configuration
-class OAuth2ServerConfiguration {
+class SecurityConfiguration {
 
     static RESOURCE_ID = "rest-service"
     static GRANT_TYPE = "password"
@@ -74,5 +78,30 @@ class OAuth2ServerConfiguration {
                 .resourceIds(RESOURCE_ID)
         }
 
+    }
+
+    @Configuration
+    @EnableWebSecurity
+    static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+        static final ROLE = "USER"
+
+        @Value("#{systemEnvironment['AUTH_USERNAME']}")
+        String authUsername = "auth_username"
+
+        @Value("#{systemEnvironment['AUTH_PASSWORD']}")
+        String authPassword = "auth_password"
+
+        void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication()
+                    .withUser(authUsername)
+                    .password(authPassword)
+                    .roles(ROLE)
+        }
+
+        @Bean
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            super.authenticationManagerBean()
+        }
     }
 }
