@@ -102,7 +102,7 @@ class BroadcastControllerSpec extends Specification {
         thrown BroadcastException
     }
 
-    void "broadcast latest should successfully return the current broadcast message from the repo"() {
+    void "broadcast latest should successfully return the default number of broadcast messages from the repo"() {
         given:
         def id = "1234"
         def date = new Date()
@@ -114,11 +114,11 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast]
 
         when:
-        ResponseEntity<List<Broadcast>> result = controller.latest(1)
+        ResponseEntity<List<Broadcast>> result = controller.latest(4)
         def line = result.body.first()
 
         then:
-        1 * repository.findAll({ it.pageSize == 1 }) >> broadcastPage
+        1 * repository.findAll({ it.pageSize == 4 }) >> broadcastPage
 
         and:
         result.body.size() == 1

@@ -1,3 +1,5 @@
+import cucumber.api.PendingException
+
 import static cucumber.api.groovy.EN.And
 
 And(~'^a "([^"]*)" status is returned$') { String status ->
@@ -31,4 +33,10 @@ And(~'^the identifier is "([^"]*)"$') { String uid ->
 
 And(~'^a "([^"]*)" message is received$') { String message ->
     assert response == message
+}
+
+And(~'^a total of (\\d+) messages has been received$') { int number ->
+    def lines = response.readLines()
+    //substract 2 for header and footer
+    assert (lines.size()) - 2 == number
 }

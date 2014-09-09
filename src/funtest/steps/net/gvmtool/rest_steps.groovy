@@ -11,7 +11,7 @@ And(~'^the identifier of the latest message is requested with "([^"]*)" header "
     http { get(path: "/broadcast/latest/id", headers: [(header): value]) }
 }
 
-And(~'^the latest message is requested$') { ->
+And(~'^the latest messages are requested$') { ->
     http { get(path: "/broadcast/latest") }
 }
 

@@ -32,6 +32,10 @@ And(~'^a valid Broadcast Identifier is returned$') { ->
     broadcastId = json(response).id
 }
 
+And(~'^a total of (\\d+) json messages have been received$') { int number ->
+    assert json(response).size() == number
+}
+
 private json(response) {
     slurper.parseText(response)
 }
