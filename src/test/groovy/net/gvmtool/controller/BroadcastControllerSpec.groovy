@@ -114,11 +114,11 @@ class BroadcastControllerSpec extends Specification {
         broadcastPage.getContent() >> [broadcast]
 
         when:
-        ResponseEntity<List<Broadcast>> result = controller.latest(4)
+        ResponseEntity<List<Broadcast>> result = controller.latest(3)
         def line = result.body.first()
 
         then:
-        1 * repository.findAll({ it.pageSize == 4 }) >> broadcastPage
+        1 * repository.findAll({ it.pageSize == 3 }) >> broadcastPage
 
         and:
         result.body.size() == 1

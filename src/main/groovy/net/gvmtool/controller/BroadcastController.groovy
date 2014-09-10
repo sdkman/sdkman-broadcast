@@ -49,7 +49,7 @@ class BroadcastController {
 
     @RequestMapping(value = "/broadcast/latest", produces = [TEXT_PLAIN_VALUE, APPLICATION_JSON_VALUE], method = GET)
     @ResponseBody
-    ResponseEntity<List<Broadcast>> latest(@RequestParam(value = "limit", defaultValue = "4") Integer limit) {
+    ResponseEntity<List<Broadcast>> latest(@RequestParam(value = "limit", defaultValue = "3") Integer limit) {
         def pageRequest = new PageRequest(0, limit.intValue(), DESC, "date")
         def page = repository.findAll(pageRequest)
         def broadcasts = page.content.collect { it }

@@ -37,20 +37,18 @@ Feature: Broadcast JSON
     And a "Not Found" message is received
     And a "NOT_FOUND" status is returned
 
-  Scenario: Broadcast the latest 4 Messages by Default
+  Scenario: Broadcast the latest 3 Messages by Default
     Given the message "Groovy 2.3.0 final has been released!" on the date "May 12, 2014"
     And the message "Groovy 2.3.0-rc-1 has been released." on the date "May 11, 2014"
     And the message "Groovy 2.3.0-beta-4 has been released." on the date "May 10, 2014"
     And the message "Groovy 2.3.0-beta-3 has been released." on the date "May 9, 2014"
-    And the message "Groovy 2.3.0-beta-2 has been released." on the date "May 8, 2014"
     When the latest message is requested with "Accept" header "application/json"
     Then the content type is "application/json"
-    And a total of 4 json messages have been received
+    And a total of 3 json messages have been received
     And the "first" json message is "Groovy 2.3.0 final has been released!"
     And the "second" json message is "Groovy 2.3.0-rc-1 has been released."
     And the "third" json message is "Groovy 2.3.0-beta-4 has been released."
-    And the "forth" json message is "Groovy 2.3.0-beta-3 has been released."
-    And the json message "Groovy 2.3.0-beta-2 has been released." has not been received
+    And the json message "Groovy 2.3.0-beta-3 has been released." has not been received
     And an "OK" status is returned
 
   Scenario: Broadcast the latest 2 Messages explicitly

@@ -37,20 +37,18 @@ Feature: Broadcast Plain Text
     And a "Not Found" message is received
     And a "NOT_FOUND" status is returned
 
-  Scenario: Broadcast the latest 4 Messages by Default
+  Scenario: Broadcast the latest 3 Messages by Default
     Given the message "Groovy 2.3.0 final has been released!" on the date "May 12, 2014"
     And the message "Groovy 2.3.0-rc-1 has been released." on the date "May 11, 2014"
     And the message "Groovy 2.3.0-beta-4 has been released." on the date "May 10, 2014"
     And the message "Groovy 2.3.0-beta-3 has been released." on the date "May 9, 2014"
-    And the message "Groovy 2.3.0-beta-2 has been released." on the date "May 8, 2014"
     When the latest messages are requested
     Then the content type is "text/plain"
-    And a total of 4 messages has been received
+    And a total of 3 messages has been received
     And the message "* 12/05/14: Groovy 2.3.0 final has been released!" is received "first"
     And the message "* 11/05/14: Groovy 2.3.0-rc-1 has been released." is received "second"
     And the message "* 10/05/14: Groovy 2.3.0-beta-4 has been released." is received "third"
-    And the message "* 09/05/14: Groovy 2.3.0-beta-3 has been released." is received "forth"
-    And the message "* 08/05/14: Groovy 2.3.0-beta-2 has been released." has not been received
+    And the message "* 09/05/14: Groovy 2.3.0-beta-3 has been released." has not been received
     And an "OK" status is returned
 
   Scenario: Broadcast the latest 2 Messages explicitly
