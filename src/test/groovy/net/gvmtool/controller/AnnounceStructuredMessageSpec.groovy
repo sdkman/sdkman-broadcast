@@ -28,7 +28,7 @@ import org.springframework.social.twitter.api.TimelineOperations
 import org.springframework.social.twitter.api.impl.TwitterTemplate
 import spock.lang.Specification
 
-class AnnounceControllerSpec extends Specification {
+class AnnounceStructuredMessageSpec extends Specification {
 
     AnnounceController controller
     BroadcastRepository repository = Mock()
@@ -113,54 +113,4 @@ class AnnounceControllerSpec extends Specification {
         then:
         1 * twitterService.update(status)
     }
-
-    void "announce free form should save a free form message"() {
-        given:
-        def text = "message"
-        def request = new FreeFormAnnounceRequest(text: text)
-        def broadcast = new Broadcast(id: "1234", text: text)
-
-        when:
-        controller.freeForm(request)
-
-        then:
-        1 * repository.save({it.text == text}) >> broadcast
-    }
-
-    void "announce free form should return a broadcast id after saving"() {
-        given:
-        def text = "message"
-        def request = new FreeFormAnnounceRequest(text: text)
-
-        and:
-        def broadcastId = "1234"
-        def broadcast = new Broadcast(id: broadcastId, text: text, date: new Date())
-
-        and:
-        repository.save(_) >> broadcast
-
-        when:
-        ResponseEntity<BroadcastId> response = controller.freeForm(request)
-
-        then:
-        response.statusCode == HttpStatus.OK
-        response.body.value == broadcastId
-    }
-
-    void "announce free form should post a free-form message to twitter"() {
-        given:
-        def status = "status"
-        def request = new FreeFormAnnounceRequest(text: status)
-        def broadcast = new Broadcast(id: "1234", text: status, date: new Date())
-
-        and:
-        repository.save(_) >> broadcast
-
-        when:
-        controller.freeForm(request)
-
-        then:
-        1 * twitterService.update(status)
-    }
-
 }
