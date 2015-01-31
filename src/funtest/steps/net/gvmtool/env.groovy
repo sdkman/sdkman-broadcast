@@ -11,7 +11,7 @@ restClient = new RESTClient(BASE_URL)
 slurper = new JsonSlurper()
 
 lineOrder = ["first": 0, "second": 1, "third": 2, "forth": 3, "fifth": 4]
-statusCodes = [200: "OK", 401: "Unauthorized", 404: "NOT_FOUND"]
+statusCodes = [200: "OK", 403: "FORBIDDEN", 404: "NOT_FOUND"]
 
 if(!binding.hasVariable("db")) {
     db = prepareDB()

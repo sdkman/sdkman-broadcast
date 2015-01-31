@@ -1,5 +1,6 @@
-import wslite.rest.RESTClientException
+package net.gvmtool
 
+import wslite.rest.RESTClientException
 import static cucumber.api.groovy.EN.And
 import static utils.HttpHelper.*
 
@@ -35,9 +36,9 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     http { get(path: "/broadcast/$id") }
 }
 
-And(~'^the structured message is announced presenting the Bearer Token$') { ->
+And(~'^the structured message is announced$') { ->
     http{
-        post(path: "/announce/struct", headers: ["Authorization": "Bearer $token"]) {
+        post(path: "/announce/struct", headers: ["X-Mashape-Proxy-Secret": token]) {
             type "application/json"
             json candidate: candidate, version: version, hashtag: hashtag
         }
@@ -46,16 +47,7 @@ And(~'^the structured message is announced presenting the Bearer Token$') { ->
 
 And(~'^the free form message is announced$') { ->
     http {
-        post(path: "/announce/freeform") {
-            type "application/json"
-            json text: freeForm
-        }
-    }
-}
-
-And(~'^the free form message is announced presenting the Bearer Token$') { ->
-    http {
-        post(path: "/announce/freeform", headers: ["Authorization": "Bearer $token"]) {
+        post(path: "/announce/freeform", headers: ["X-Mashape-Proxy-Secret": token]) {
             type "application/json"
             json text: freeForm
         }

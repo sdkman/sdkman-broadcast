@@ -16,16 +16,12 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
-import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
+import net.gvmtool.security.AccessToken
 import net.gvmtool.service.TextService
 import net.gvmtool.service.TwitterService
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.social.twitter.api.TimelineOperations
-import org.springframework.social.twitter.api.impl.TwitterTemplate
 import spock.lang.Specification
 
 class AnnounceStructuredMessageSpec extends Specification {
@@ -35,8 +31,15 @@ class AnnounceStructuredMessageSpec extends Specification {
     TextService textService = Mock()
     TwitterService twitterService = Mock()
 
+    AccessToken accessToken = new AccessToken(value: "access_token")
+    String header = "access_token"
+
     void setup(){
-        controller = new AnnounceController(repository: repository, textService: textService, twitterService: twitterService)
+        controller = new AnnounceController(
+                repository: repository,
+                textService: textService,
+                twitterService: twitterService,
+                accessToken: accessToken)
     }
 
     void "announce structured should compose a structured broadcast message"() {
@@ -53,7 +56,7 @@ class AnnounceStructuredMessageSpec extends Specification {
         repository.save(_) >> new Broadcast(id: "1234")
 
         when:
-        controller.structured(request)
+        controller.structured(request, header)
 
         then:
         1 * textService.composeStructuredMessage(candidate, version, hashtag) >> structuredMessage
@@ -71,7 +74,7 @@ class AnnounceStructuredMessageSpec extends Specification {
         textService.composeStructuredMessage(_, _, _) >> structuredMessage
 
         when:
-        controller.structured(request)
+        controller.structured(request, header)
 
         then:
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
@@ -90,7 +93,7 @@ class AnnounceStructuredMessageSpec extends Specification {
         repository.save(_ as Broadcast) >> new Broadcast(id: broadcastId, text: "some message")
 
         when:
-        def response = controller.structured(request)
+        def response = controller.structured(request, header)
 
         then:
         response.statusCode == HttpStatus.OK
@@ -108,7 +111,7 @@ class AnnounceStructuredMessageSpec extends Specification {
         textService.composeStructuredMessage(_, _, _) >> status
 
         when:
-        controller.structured(request)
+        controller.structured(request, header)
 
         then:
         1 * twitterService.update(status)

@@ -17,15 +17,15 @@
 Feature: Security
 
   Scenario: The Announce endpoints can NOT be Accessed when not Authorised
-    Given the user is not Authenticated and has no Bearer Token
+    Given the user is not Authorised to Announce
     And a new free form message "This is a free form message" to be announced
     When the free form message is announced
-    Then an "Unauthorized" status is returned
+    Then an "FORBIDDEN" status is returned
 
   Scenario: The Announce endpoints CAN be Accessed when Authorised
-    Given the user is Authenticated and issued a Bearer Token
+    Given the user is Authorised to Announce
     And a new free form message "This is a free form message" to be announced
-    When the free form message is announced presenting the Bearer Token
+    When the free form message is announced
     Then an "OK" status is returned
 
   Scenario: The Broadcast endpoints can always be Accessed without Authorisation

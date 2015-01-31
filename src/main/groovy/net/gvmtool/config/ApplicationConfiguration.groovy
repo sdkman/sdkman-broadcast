@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package utils
+package net.gvmtool.config
 
-import groovy.json.JsonSlurper
-import wslite.http.auth.HTTPBasicAuthorization
-import wslite.rest.RESTClient
+import net.gvmtool.security.AccessToken
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
-class HttpHelper {
+@Configuration
+class ApplicationConfiguration {
+    @Value("#{systemEnvironment['ACCESS_TOKEN']}")
+    String headerValue = "access_token"
 
-    static slurper = new JsonSlurper()
-
-    static client = new RESTClient("http://localhost:8080")
-
-    static post(map, closure) {
-        client.post(map, closure)
+    @Bean
+    AccessToken accessToken() {
+        new AccessToken(value: headerValue)
     }
-
-    static get(map) {
-        client.get(map)
-    }
-
 }

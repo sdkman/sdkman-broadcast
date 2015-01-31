@@ -32,10 +32,8 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-remote-shell"
-    compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.boot:spring-boot-starter-data-mongodb"
     compile "org.springframework.boot:spring-boot-starter-social-twitter"
-    compile "org.springframework.security.oauth:spring-security-oauth2:2.0.1.RELEASE"
     testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
     testCompile 'junit:junit:4.11'
     testCompile 'cglib:cglib-nodep:3.1'
@@ -104,10 +102,7 @@ cloudfoundry {
         TWITTER_CONSUMER_SECRET: envVariableAsGlobal("CF_TWITTER_CONSUMER_SECRET", false),
         TWITTER_ACCESS_TOKEN: envVariableAsGlobal("CF_TWITTER_ACCESS_TOKEN", false),
         TWITTER_ACCESS_TOKEN_SECRET: envVariableAsGlobal("CF_TWITTER_ACCESS_TOKEN_SECRET", false),
-        CLIENT_ID: envVariableAsGlobal("CF_CLIENT_ID", true),
-        CLIENT_SECRET: envVariableAsGlobal("CF_CLIENT_SECRET", false),
-        AUTH_USERNAME: envVariableAsGlobal("CF_AUTH_USERNAME", true),
-        AUTH_PASSWORD: envVariableAsGlobal("CF_AUTH_PASSWORD", true)
+        ACCESS_TOKEN: envVariableAsGlobal("CF_ACCESS_TOKEN", false)
     ]
 }
 

@@ -13,24 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package utils
+package net.gvmtool.security
 
-import groovy.json.JsonSlurper
-import wslite.http.auth.HTTPBasicAuthorization
-import wslite.rest.RESTClient
-
-class HttpHelper {
-
-    static slurper = new JsonSlurper()
-
-    static client = new RESTClient("http://localhost:8080")
-
-    static post(map, closure) {
-        client.post(map, closure)
-    }
-
-    static get(map) {
-        client.get(map)
-    }
-
+class AccessToken {
+    String value
 }
