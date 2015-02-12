@@ -38,7 +38,7 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
 
 And(~'^the structured message is announced$') { ->
     http{
-        post(path: "/announce/struct", headers: ["X-Mashape-Proxy-Secret": token]) {
+        post(path: "/announce/struct", headers: ["access_token": token]) {
             type "application/json"
             json candidate: candidate, version: version, hashtag: hashtag
         }
@@ -47,7 +47,7 @@ And(~'^the structured message is announced$') { ->
 
 And(~'^the free form message is announced$') { ->
     http {
-        post(path: "/announce/freeform", headers: ["X-Mashape-Proxy-Secret": token]) {
+        post(path: "/announce/freeform", headers: ["access_token": token]) {
             type "application/json"
             json text: freeForm
         }

@@ -49,7 +49,7 @@ class AnnounceController implements Authorisation {
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request,
-                                           @RequestHeader(value = "X-Mashape-Proxy-Secret") String header) {
+                                           @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
             twitterService.update(message)
@@ -61,7 +61,7 @@ class AnnounceController implements Authorisation {
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
     ResponseEntity<BroadcastId> freeForm(@RequestBody FreeFormAnnounceRequest request,
-                                         @RequestHeader(value = "X-Mashape-Proxy-Secret") String header) {
+                                         @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             twitterService.update(request.text)
             def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
