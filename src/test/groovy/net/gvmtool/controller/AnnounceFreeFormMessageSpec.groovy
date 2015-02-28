@@ -16,7 +16,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.controller.AnnounceController.ApiResponse
+import net.gvmtool.response.ApiResponse
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.security.AccessToken

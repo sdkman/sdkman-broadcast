@@ -19,6 +19,7 @@ import net.gvmtool.domain.Broadcast
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
+import net.gvmtool.response.ApiResponse
 import net.gvmtool.security.Authorisation
 import net.gvmtool.service.TextService
 import net.gvmtool.service.TwitterService
@@ -66,11 +67,5 @@ class AnnounceController implements Authorisation {
             def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
             new ResponseEntity<ApiResponse>(new ApiResponse(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
         }
-    }
-
-    class ApiResponse {
-        int status
-        String id
-        String message
     }
 }
