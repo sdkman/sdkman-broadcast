@@ -16,7 +16,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.domain.BroadcastId
+import net.gvmtool.controller.AnnounceController.ApiResponse
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.security.AccessToken
@@ -70,11 +70,11 @@ class AnnounceFreeFormMessageSpec extends Specification {
         repository.save(_) >> broadcast
 
         when:
-        ResponseEntity<BroadcastId> response = controller.freeForm(request, header)
+        ResponseEntity<ApiResponse> response = controller.freeForm(request, header)
 
         then:
         response.statusCode == HttpStatus.OK
-        response.body.value == broadcastId
+        response.body.id == broadcastId
     }
 
     void "announce free form should post a free-form message to twitter"() {

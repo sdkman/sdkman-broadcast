@@ -97,7 +97,7 @@ class AnnounceStructuredMessageSpec extends Specification {
 
         then:
         response.statusCode == HttpStatus.OK
-        response.body.value == broadcastId
+        response.body.id == broadcastId
     }
 
     void "announce structured should post a structured message to twitter"() {

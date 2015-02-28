@@ -16,7 +16,6 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.domain.BroadcastId
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
@@ -48,24 +47,30 @@ class AnnounceController implements Authorisation {
 
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
-    ResponseEntity<BroadcastId> structured(@RequestBody StructuredAnnounceRequest request,
+    ResponseEntity<ApiResponse> structured(@RequestBody StructuredAnnounceRequest request,
                                            @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
             twitterService.update(message)
             def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
-            new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
+            new ResponseEntity<ApiResponse>(new ApiResponse(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
         }
     }
 
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
-    ResponseEntity<BroadcastId> freeForm(@RequestBody FreeFormAnnounceRequest request,
+    ResponseEntity<ApiResponse> freeForm(@RequestBody FreeFormAnnounceRequest request,
                                          @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             twitterService.update(request.text)
             def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
-            new ResponseEntity<BroadcastId>(broadcast.toBroadcastId(), OK)
+            new ResponseEntity<ApiResponse>(new ApiResponse(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
         }
+    }
+
+    class ApiResponse {
+        int status
+        String id
+        String message
     }
 }
