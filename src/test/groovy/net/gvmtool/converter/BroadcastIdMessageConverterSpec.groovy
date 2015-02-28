@@ -15,7 +15,7 @@
  */
 package net.gvmtool.converter
 
-import net.gvmtool.domain.BroadcastId
+import net.gvmtool.response.BroadcastId
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpOutputMessage
 import spock.lang.Specification

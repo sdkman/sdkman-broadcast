@@ -15,7 +15,7 @@
  */
 package net.gvmtool.converter
 
-import net.gvmtool.domain.BroadcastId
+import net.gvmtool.response.BroadcastId
 import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpOutputMessage
 import org.springframework.http.MediaType

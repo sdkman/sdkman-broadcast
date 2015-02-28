@@ -16,7 +16,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.domain.BroadcastId
+import net.gvmtool.response.BroadcastId
 import net.gvmtool.exception.BroadcastException
 import net.gvmtool.repo.BroadcastRepository
 import org.springframework.data.domain.Page
