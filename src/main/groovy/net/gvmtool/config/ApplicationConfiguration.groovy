@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ApplicationConfiguration {
     @Value("#{systemEnvironment['ACCESS_TOKEN']}")
-    String headerValue = "access_token"
+    String headerValue = "default_token"
 
     @Bean
     AccessToken accessToken() {

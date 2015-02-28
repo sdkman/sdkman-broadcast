@@ -31,8 +31,8 @@ class AnnounceStructuredMessageSpec extends Specification {
     TextService textService = Mock()
     TwitterService twitterService = Mock()
 
-    AccessToken accessToken = new AccessToken(value: "access_token")
-    String header = "access_token"
+    AccessToken accessToken = new AccessToken(value: "default_token")
+    String header = "default_token"
 
     void setup(){
         controller = new AnnounceController(
