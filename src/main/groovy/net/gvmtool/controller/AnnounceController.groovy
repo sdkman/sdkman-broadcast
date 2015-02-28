@@ -19,7 +19,7 @@ import net.gvmtool.domain.Broadcast
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.request.StructuredAnnounceRequest
-import net.gvmtool.response.ApiResponse
+import net.gvmtool.response.Announcement
 import net.gvmtool.security.Authorisation
 import net.gvmtool.service.TextService
 import net.gvmtool.service.TwitterService
@@ -48,24 +48,24 @@ class AnnounceController implements Authorisation {
 
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
-    ResponseEntity<ApiResponse> structured(@RequestBody StructuredAnnounceRequest request,
+    ResponseEntity<Announcement> structured(@RequestBody StructuredAnnounceRequest request,
                                            @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
             twitterService.update(message)
             def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
-            new ResponseEntity<ApiResponse>(new ApiResponse(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
+            new ResponseEntity<Announcement>(new Announcement(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
         }
     }
 
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
-    ResponseEntity<ApiResponse> freeForm(@RequestBody FreeFormAnnounceRequest request,
+    ResponseEntity<Announcement> freeForm(@RequestBody FreeFormAnnounceRequest request,
                                          @RequestHeader(value = "access_token") String header) {
         withAuthorisation(header) {
             twitterService.update(request.text)
             def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
-            new ResponseEntity<ApiResponse>(new ApiResponse(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
+            new ResponseEntity<Announcement>(new Announcement(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)
         }
     }
 }

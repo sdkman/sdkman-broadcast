@@ -16,7 +16,7 @@
 
 package net.gvmtool.response
 
-class ApiResponse {
+class Announcement {
     int status
     String id
     String message

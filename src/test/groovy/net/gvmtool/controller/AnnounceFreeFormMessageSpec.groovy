@@ -16,7 +16,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.domain.Broadcast
-import net.gvmtool.response.ApiResponse
+import net.gvmtool.response.Announcement
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
 import net.gvmtool.security.AccessToken
@@ -70,7 +70,7 @@ class AnnounceFreeFormMessageSpec extends Specification {
         repository.save(_) >> broadcast
 
         when:
-        ResponseEntity<ApiResponse> response = controller.freeForm(request, header)
+        ResponseEntity<Announcement> response = controller.freeForm(request, header)
 
         then:
         response.statusCode == HttpStatus.OK
