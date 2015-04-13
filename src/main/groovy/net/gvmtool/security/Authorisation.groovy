@@ -32,13 +32,12 @@ trait Authorisation {
         else throw new ForbiddenException("Not authorised to access this service.")
     }
 
-    ForbiddenMessage buildAuthorisationDeniedMessage(String message) {
-        new ForbiddenMessage(code: FORBIDDEN.value, message: message)
+    @ExceptionHandler(ForbiddenException)
+    ResponseEntity<ForbiddenMessage> handle(ForbiddenException ae) {
+        new ResponseEntity<ForbiddenMessage>(buildAuthorisationDeniedMessage(ae.message), FORBIDDEN)
     }
 
-
-    @ExceptionHandler(ForbiddenException)
-    ResponseEntity<ForbiddenException> handle(ForbiddenException ae) {
-        new ResponseEntity<ForbiddenMessage>(buildAuthorisationDeniedMessage(ae.message), FORBIDDEN)
+    ForbiddenMessage buildAuthorisationDeniedMessage(String message) {
+        new ForbiddenMessage(code: FORBIDDEN.value(), message: message)
     }
 }
