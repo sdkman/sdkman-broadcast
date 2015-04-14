@@ -16,16 +16,37 @@
 
 Feature: Security
 
-  Scenario: The Announce endpoints can NOT be Accessed when not Authorised
-    Given the user is not Authorised to Announce
+  Scenario: The Announce Freeform endpoints can NOT be Accessed with incorrect Access Token
+    Given the user does not have a valid token header
     And a new free form message "This is a free form message" to be announced
     When the free form message is announced
     Then an "FORBIDDEN" status is returned
 
-  Scenario: The Announce endpoints CAN be Accessed when Authorised
-    Given the user is Authorised to Announce
+  Scenario: The Announce Freeform endpoints CAN be Accessed with correct Access Token
+    Given the user has a valid token header
     And a new free form message "This is a free form message" to be announced
     When the free form message is announced
+    Then an "OK" status is returned
+
+  Scenario: The Announce Structured endpoints can NOT be Accessed with incorrect Access Token
+    Given the user does not have a valid token header
+    And the user has a "invalid" consumer header
+    And a new message to be announced for "groovy" version "2.4.1" hashtag "#groovylang"
+    When the structured message is announced
+    Then a "FORBIDDEN" status is returned
+
+  Scenario: The Announce Structured endpoints can NOT be Accessed with incorrect Consumer header
+    Given the user has a "invalid" consumer header
+    And the user has a valid token header
+    And a new message to be announced for "groovy" version "2.4.1" hashtag "#groovylang"
+    When the structured message is announced
+    Then a "FORBIDDEN" status is returned
+
+  Scenario: The Announce Structured endpoints CAN be Accessed with correct headers
+    Given the user has a valid token header
+    And the user has a "groovy" consumer header
+    And a new message to be announced for "groovy" version "2.4.1" hashtag "#groovylang"
+    When the structured message is announced
     Then an "OK" status is returned
 
   Scenario: The Broadcast endpoints can always be Accessed without Authorisation

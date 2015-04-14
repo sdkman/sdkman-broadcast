@@ -32,7 +32,6 @@ class AnnounceStructuredMessageSpec extends Specification {
     TwitterService twitterService = Mock()
 
     AccessToken accessToken = new AccessToken(value: "default_token")
-    String header = "default_token"
 
     void setup(){
         controller = new AnnounceController(
@@ -49,6 +48,9 @@ class AnnounceStructuredMessageSpec extends Specification {
         def hashtag = "groovylang"
         def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
+        def header = "default_token"
+        def consumer = "groovy"
+
         and:
         def structuredMessage = "Groovy 2.3.0 has been released on GVM. #groovylang"
 
@@ -56,7 +58,7 @@ class AnnounceStructuredMessageSpec extends Specification {
         repository.save(_) >> new Broadcast(id: "1234")
 
         when:
-        controller.structured(request, header)
+        controller.structured(request, header, consumer)
 
         then:
         1 * textService.composeStructuredMessage(candidate, version, hashtag) >> structuredMessage
@@ -69,12 +71,15 @@ class AnnounceStructuredMessageSpec extends Specification {
         def hashtag = "groovylang"
         def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
+        def header = "default_token"
+        def consumer = "groovy"
+
         and:
         def structuredMessage = "Groovy 2.3.0 has been released on GVM. #groovylang"
         textService.composeStructuredMessage(_, _, _) >> structuredMessage
 
         when:
-        controller.structured(request, header)
+        controller.structured(request, header, consumer)
 
         then:
         1 * repository.save({it.text == structuredMessage}) >> new Broadcast(id: "1234")
@@ -87,13 +92,16 @@ class AnnounceStructuredMessageSpec extends Specification {
         def hashtag = "groovylang"
         def request = new StructuredAnnounceRequest(candidate: candidate, version: version, hashtag: hashtag)
 
+        def header = "default_token"
+        def consumer = "groovy"
+
         and:
         def broadcastId = "1234"
         textService.composeStructuredMessage(_, _, _) >> "some message"
         repository.save(_ as Broadcast) >> new Broadcast(id: broadcastId, text: "some message")
 
         when:
-        def response = controller.structured(request, header)
+        def response = controller.structured(request, header, consumer)
 
         then:
         response.statusCode == HttpStatus.OK
@@ -106,12 +114,15 @@ class AnnounceStructuredMessageSpec extends Specification {
         def status = "Groovy 2.4.0 has been released on GVM. #groovylang"
         def broadcast = new Broadcast(id: "1234", text: status, date: new Date())
 
+        def header = "default_token"
+        def consumer = "groovy"
+
         and:
         repository.save(_) >> broadcast
         textService.composeStructuredMessage(_, _, _) >> status
 
         when:
-        controller.structured(request, header)
+        controller.structured(request, header, consumer)
 
         then:
         1 * twitterService.update(status)

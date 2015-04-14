@@ -16,7 +16,6 @@
 package utils
 
 import groovy.json.JsonSlurper
-import wslite.http.auth.HTTPBasicAuthorization
 import wslite.rest.RESTClient
 
 class HttpHelper {

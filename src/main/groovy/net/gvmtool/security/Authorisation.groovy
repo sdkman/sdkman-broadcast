@@ -27,8 +27,8 @@ trait Authorisation {
     @Autowired
     AccessToken accessToken
 
-    def withAuthorisation(String header, fun) {
-        if(accessToken.value == header) fun()
+    ResponseEntity withAuthorisation(String header, validation, fun) {
+        if(accessToken.value == header && validation()) fun()
         else throw new ForbiddenException("Not authorised to access this service.")
     }
 
@@ -37,7 +37,7 @@ trait Authorisation {
         new ResponseEntity<ForbiddenMessage>(buildAuthorisationDeniedMessage(ae.message), FORBIDDEN)
     }
 
-    ForbiddenMessage buildAuthorisationDeniedMessage(String message) {
+    private static buildAuthorisationDeniedMessage(String message) {
         new ForbiddenMessage(code: FORBIDDEN.value(), message: message)
     }
 }

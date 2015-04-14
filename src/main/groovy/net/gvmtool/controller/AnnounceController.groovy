@@ -49,8 +49,9 @@ class AnnounceController implements Authorisation {
     @RequestMapping(value = "/announce/struct", method = POST)
     @ResponseBody
     ResponseEntity<Announcement> structured(@RequestBody StructuredAnnounceRequest request,
-                                           @RequestHeader(value = "access_token") String header) {
-        withAuthorisation(header) {
+                                            @RequestHeader(value = "access_token") String header,
+                                            @RequestHeader(value = "consumer") String consumer) {
+        withAuthorisation(header, {request.candidate == consumer}) {
             def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
             twitterService.update(message)
             def broadcast = repository.save(new Broadcast(text: message, date: new Date()))
@@ -61,8 +62,8 @@ class AnnounceController implements Authorisation {
     @RequestMapping(value = "/announce/freeform", method = POST)
     @ResponseBody
     ResponseEntity<Announcement> freeForm(@RequestBody FreeFormAnnounceRequest request,
-                                         @RequestHeader(value = "access_token") String header) {
-        withAuthorisation(header) {
+                                          @RequestHeader(value = "access_token") String header) {
+        withAuthorisation(header, {true}) {
             twitterService.update(request.text)
             def broadcast = repository.save(new Broadcast(text: request.text, date: new Date()))
             new ResponseEntity<Announcement>(new Announcement(status: OK.value(), id: broadcast.id, message: broadcast.text), OK)

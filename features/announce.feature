@@ -17,7 +17,8 @@
 Feature: Announce
 
   Background:
-    Given the user is Authorised to Announce
+    Given the user has a valid token header
+    And the user has a "groovy" consumer header
 
   Scenario: Announce a new Structured Message
     Given a new message to be announced for "groovy" version "2.3.0" hashtag "#groovylang"

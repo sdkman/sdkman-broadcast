@@ -37,16 +37,16 @@ class AuthorisedAnnouncementSpec extends Specification {
         controller = new AnnounceController(repository: repository, textService: textService, twitterService: twitterService)
     }
 
-    void "should authorise a structured announcement on a valid request header"() {
+    void "should authorise a structured announcement on valid token and consumer headers"() {
         given:
         controller.accessToken = new AccessToken(value: "valid_token")
 
         and:
-        StructuredAnnounceRequest request = Mock()
+        def request = new StructuredAnnounceRequest(candidate: "groovy")
         Broadcast broadcast = new Broadcast(id: "1", text: "text", date: new Date())
 
         when:
-        def response = controller.structured(request, "valid_token")
+        def response = controller.structured(request, "valid_token", "groovy")
 
         then:
         repository.save(_) >> broadcast
@@ -55,23 +55,42 @@ class AuthorisedAnnouncementSpec extends Specification {
         response.statusCode == HttpStatus.OK
     }
 
-    void "should not authorise a structured request on an invalid request header"() {
+    void "should not authorise a structured request on an invalid token header"() {
         given:
         controller.accessToken = new AccessToken(value: "valid_token")
 
         and:
-        StructuredAnnounceRequest request = Mock()
-        String token = "invalid_token"
+        def request = new StructuredAnnounceRequest(candidate: "groovy")
+        def token = "invalid_token"
+        def consumer = "groovy"
 
         when:
-        controller.structured(request, token)
+        controller.structured(request, token, consumer)
 
         then:
         def e = thrown(ForbiddenException)
         e.message == "Not authorised to access this service."
     }
 
-    void "should authorise a freeform announcement on a valid request header"() {
+    void "should not authorise a structured request on an invalid consumer header"() {
+        given:
+        controller.accessToken = new AccessToken(value: "valid_token")
+
+        and:
+        def request = new StructuredAnnounceRequest(candidate: "groovy")
+        def token = "valid_token"
+        def consumer = "grails"
+
+        when:
+        controller.structured(request, token, consumer)
+
+        then:
+        def e = thrown(ForbiddenException)
+        e.message == "Not authorised to access this service."
+    }
+
+
+    void "should authorise a freeform announcement on a valid token header"() {
         given:
         controller.accessToken = new AccessToken(value: "valid_token")
 
@@ -89,7 +108,7 @@ class AuthorisedAnnouncementSpec extends Specification {
         response.statusCode == HttpStatus.OK
     }
 
-    void "should not authorise a freeform request on an invalid request header"() {
+    void "should not authorise a freeform request on an invalid token header"() {
         given:
         controller.accessToken = new AccessToken(value: "valid_token")
 

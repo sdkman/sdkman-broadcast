@@ -38,7 +38,7 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
 
 And(~'^the structured message is announced$') { ->
     http{
-        post(path: "/announce/struct", headers: ["access_token": token]) {
+        post(path: "/announce/struct", headers: ["access_token": token, "consumer": consumer]) {
             type "application/json"
             json candidate: candidate, version: version, hashtag: hashtag
         }
