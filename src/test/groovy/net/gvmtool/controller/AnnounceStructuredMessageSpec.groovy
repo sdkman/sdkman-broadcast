@@ -18,7 +18,7 @@ package net.gvmtool.controller
 import net.gvmtool.domain.Broadcast
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.StructuredAnnounceRequest
-import net.gvmtool.security.AccessToken
+import net.gvmtool.security.SecureHeaders
 import net.gvmtool.service.TextService
 import net.gvmtool.service.TwitterService
 import org.springframework.http.HttpStatus
@@ -31,14 +31,14 @@ class AnnounceStructuredMessageSpec extends Specification {
     TextService textService = Mock()
     TwitterService twitterService = Mock()
 
-    AccessToken accessToken = new AccessToken(value: "default_token")
+    SecureHeaders secureHeaders = new SecureHeaders(token: "default_token", admin: "default_admin")
 
     void setup(){
         controller = new AnnounceController(
                 repository: repository,
                 textService: textService,
                 twitterService: twitterService,
-                accessToken: accessToken)
+                secureHeaders: secureHeaders)
     }
 
     void "announce structured should compose a structured broadcast message"() {

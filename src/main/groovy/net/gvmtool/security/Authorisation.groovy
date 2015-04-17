@@ -25,10 +25,10 @@ import static org.springframework.http.HttpStatus.FORBIDDEN
 trait Authorisation {
 
     @Autowired
-    AccessToken accessToken
+    SecureHeaders secureHeaders
 
     ResponseEntity withAuthorisation(String header, validation, fun) {
-        if(accessToken.value == header && validation()) fun()
+        if(secureHeaders.token == header && validation()) fun()
         else throw new ForbiddenException("Not authorised to access this service.")
     }
 

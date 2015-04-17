@@ -51,7 +51,7 @@ class AnnounceController implements Authorisation {
     ResponseEntity<Announcement> structured(@RequestBody StructuredAnnounceRequest request,
                                             @RequestHeader(value = "access_token") String header,
                                             @RequestHeader(value = "consumer") String consumer) {
-        withAuthorisation(header, {request.candidate == consumer}) {
+        withAuthorisation(header, { consumer == request.candidate || consumer == secureHeaders.admin }) {
             def message = textService.composeStructuredMessage(request.candidate, request.version, request.hashtag)
             twitterService.update(message)
             def broadcast = repository.save(new Broadcast(text: message, date: new Date()))

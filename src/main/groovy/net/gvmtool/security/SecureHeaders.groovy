@@ -15,6 +15,7 @@
  */
 package net.gvmtool.security
 
-class AccessToken {
-    String value
+class SecureHeaders {
+    String token
+    String admin
 }

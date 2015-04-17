@@ -19,7 +19,7 @@ import net.gvmtool.domain.Broadcast
 import net.gvmtool.response.Announcement
 import net.gvmtool.repo.BroadcastRepository
 import net.gvmtool.request.FreeFormAnnounceRequest
-import net.gvmtool.security.AccessToken
+import net.gvmtool.security.SecureHeaders
 import net.gvmtool.service.TextService
 import net.gvmtool.service.TwitterService
 import org.springframework.http.HttpStatus
@@ -33,7 +33,7 @@ class AnnounceFreeFormMessageSpec extends Specification {
     TextService textService = Mock()
     TwitterService twitterService = Mock()
 
-    AccessToken accessToken = new AccessToken(value: "default_token")
+    SecureHeaders secureHeaders = new SecureHeaders(token: "default_token")
     String header = "default_token"
 
     void setup(){
@@ -41,7 +41,7 @@ class AnnounceFreeFormMessageSpec extends Specification {
                 repository: repository,
                 textService: textService,
                 twitterService: twitterService,
-                accessToken: accessToken)
+                secureHeaders: secureHeaders)
     }
 
     void "announce free form should save a free form message"() {

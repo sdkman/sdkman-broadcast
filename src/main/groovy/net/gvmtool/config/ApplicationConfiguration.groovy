@@ -15,7 +15,7 @@
  */
 package net.gvmtool.config
 
-import net.gvmtool.security.AccessToken
+import net.gvmtool.security.SecureHeaders
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,10 +23,13 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ApplicationConfiguration {
     @Value("#{systemEnvironment['ACCESS_TOKEN']}")
-    String headerValue = "default_token"
+    String tokenValue = "default_token"
+
+    @Value("#{systemEnvironment['ADMIN_HEADER']}")
+    String adminValue = "default_admin"
 
     @Bean
-    AccessToken accessToken() {
-        new AccessToken(value: headerValue)
+    SecureHeaders secureHeaders() {
+        new SecureHeaders(token: tokenValue, admin: adminValue)
     }
 }

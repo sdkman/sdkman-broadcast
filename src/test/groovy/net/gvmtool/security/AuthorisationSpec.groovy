@@ -29,8 +29,8 @@ class AuthorisationSpec extends Specification {
     AuthorisationUnderTest underTest
 
     void setup() {
-        def accessToken = new AccessToken(value: "valid_token")
-        underTest = new AuthorisationUnderTest(accessToken: accessToken)
+        def secureHeaders = new SecureHeaders(token: "valid_token")
+        underTest = new AuthorisationUnderTest(secureHeaders: secureHeaders)
     }
 
     void "should invoke function and return success response on valid token and consumer"() {

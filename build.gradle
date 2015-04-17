@@ -101,7 +101,8 @@ cloudfoundry {
         TWITTER_CONSUMER_SECRET: envVariableAsGlobal("CF_TWITTER_CONSUMER_SECRET", false),
         TWITTER_ACCESS_TOKEN: envVariableAsGlobal("CF_TWITTER_ACCESS_TOKEN", false),
         TWITTER_ACCESS_TOKEN_SECRET: envVariableAsGlobal("CF_TWITTER_ACCESS_TOKEN_SECRET", false),
-        ACCESS_TOKEN: envVariableAsGlobal("CF_ACCESS_TOKEN", false)
+        ACCESS_TOKEN: envVariableAsGlobal("CF_ACCESS_TOKEN", false),
+        ADMIN_HEADER: envVariableAsGlobal("CF_ADMIN_HEADER", false)
     ]
 }
 

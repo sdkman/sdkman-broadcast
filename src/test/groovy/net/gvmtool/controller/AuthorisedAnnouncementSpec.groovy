@@ -16,7 +16,7 @@
 package net.gvmtool.controller
 
 import net.gvmtool.request.FreeFormAnnounceRequest
-import net.gvmtool.security.AccessToken
+import net.gvmtool.security.SecureHeaders
 import net.gvmtool.domain.Broadcast
 import net.gvmtool.exception.ForbiddenException
 import net.gvmtool.repo.BroadcastRepository
@@ -39,14 +39,34 @@ class AuthorisedAnnouncementSpec extends Specification {
 
     void "should authorise a structured announcement on valid token and consumer headers"() {
         given:
-        controller.accessToken = new AccessToken(value: "valid_token")
+        controller.secureHeaders = new SecureHeaders(token: "valid_token")
+        def consumer = "groovy"
 
         and:
         def request = new StructuredAnnounceRequest(candidate: "groovy")
         Broadcast broadcast = new Broadcast(id: "1", text: "text", date: new Date())
 
         when:
-        def response = controller.structured(request, "valid_token", "groovy")
+        def response = controller.structured(request, "valid_token", consumer)
+
+        then:
+        repository.save(_) >> broadcast
+
+        and:
+        response.statusCode == HttpStatus.OK
+    }
+
+    void "should authorise a structured announcement on valid token and admin headers"() {
+        given:
+        controller.secureHeaders = new SecureHeaders(token: "valid_token", admin: "valid_admin")
+        def consumer = "valid_admin"
+
+        and:
+        def request = new StructuredAnnounceRequest(candidate: "groovy")
+        Broadcast broadcast = new Broadcast(id: "1", text: "text", date: new Date())
+
+        when:
+        def response = controller.structured(request, "valid_token", consumer)
 
         then:
         repository.save(_) >> broadcast
@@ -57,7 +77,7 @@ class AuthorisedAnnouncementSpec extends Specification {
 
     void "should not authorise a structured request on an invalid token header"() {
         given:
-        controller.accessToken = new AccessToken(value: "valid_token")
+        controller.secureHeaders = new SecureHeaders(token: "valid_token")
 
         and:
         def request = new StructuredAnnounceRequest(candidate: "groovy")
@@ -74,7 +94,7 @@ class AuthorisedAnnouncementSpec extends Specification {
 
     void "should not authorise a structured request on an invalid consumer header"() {
         given:
-        controller.accessToken = new AccessToken(value: "valid_token")
+        controller.secureHeaders = new SecureHeaders(token: "valid_token")
 
         and:
         def request = new StructuredAnnounceRequest(candidate: "groovy")
@@ -92,7 +112,7 @@ class AuthorisedAnnouncementSpec extends Specification {
 
     void "should authorise a freeform announcement on a valid token header"() {
         given:
-        controller.accessToken = new AccessToken(value: "valid_token")
+        controller.secureHeaders = new SecureHeaders(token: "valid_token")
 
         and:
         FreeFormAnnounceRequest request = Mock()
@@ -110,7 +130,7 @@ class AuthorisedAnnouncementSpec extends Specification {
 
     void "should not authorise a freeform request on an invalid token header"() {
         given:
-        controller.accessToken = new AccessToken(value: "valid_token")
+        controller.secureHeaders = new SecureHeaders(token: "valid_token")
 
         and:
         FreeFormAnnounceRequest request = Mock()
