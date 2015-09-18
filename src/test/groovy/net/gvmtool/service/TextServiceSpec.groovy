@@ -104,7 +104,7 @@ class TextServiceSpec extends Specification {
         String message = service.composeStructuredMessage(candidate, version, hashtag)
 
         then:
-        message == "Groovy 2.3.0 has been released on GVM. #groovylang"
+        message == "Groovy 2.3.0 released on SDKMAN! #groovylang"
     }
 
     void "should compose a structured release message ignoring a # in the hashtag"() {

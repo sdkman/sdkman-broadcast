@@ -41,7 +41,7 @@ class TextService {
         "${output}$FOOTER"
     }
 
-    private buildMessage(broadcasts) {
+    private static buildMessage(broadcasts) {
         def output = ""
         broadcasts.each { broadcast ->
             output += "* ${getDateInstance(SHORT, Locale.UK).format(broadcast.date)}: $broadcast.text\n"
@@ -51,6 +51,6 @@ class TextService {
 
     String composeStructuredMessage(String candidate, String version, String hashtag = candidate) {
         def prefixedHashtag = hashtag.startsWith("#") ? hashtag : "#$hashtag"
-        "${candidate.toLowerCase().capitalize()} $version has been released on GVM. $prefixedHashtag"
+        "${candidate.toLowerCase().capitalize()} $version released on SDKMAN! $prefixedHashtag"
     }
 }
