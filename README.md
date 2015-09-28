@@ -1,8 +1,8 @@
-# GVM Broadcast API
+# SDKMAN! Broadcast API
 
-This is a dedicated microservice API used for Announcements on the GVM platform. It is used by GVM to announce breaking 
+This is a dedicated microservice API used for Announcements on the SDKMAN! platform. It is used by SDKMAN! to announce breaking
 news about Candidate Releases and other important events. It's Broadcast Messages can be consumed through it's REST
-endpoints, as is the case with the GVM Bash client. It also has the ability to publish it's Messages to social media 
+endpoints, as is the case with the SDKMAN! Bash client. It also has the ability to publish it's Messages to social media
 sites such as Twitter.
 
 ## Content Negotiation
@@ -13,7 +13,7 @@ to your request, you should see the results in a JSON document.
 
 ## Interacting with the API
 
-We have a [wiki page](https://github.com/gvmtool/gvm-broadcast-api/wiki/Public-Interface) detailing how to interact with
+We have a [wiki page](https://github.com/sdkman/sdkman-broadcast-api/wiki/Public-Interface) detailing how to interact with
 the API from Curl. Feel free to adapt these examples for your own use.
 
 ## Running it up locally
@@ -28,7 +28,7 @@ Once running, step into the project folder and run the tests.
 
 We can now run the app up locally with a simple
 
-    $ java -jar build/libs/gvm-broadcast-api-1.0.0-SNAPSHOT.jar
+    $ java -jar build/libs/sdkman-broadcast-api-1.0.0-SNAPSHOT.jar
 
 ## Environment Variables
 
