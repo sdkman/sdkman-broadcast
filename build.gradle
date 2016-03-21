@@ -81,7 +81,7 @@ check.dependsOn functionalTest
 
 cloudfoundry {
     file = file("${projectDir}/build/libs/${project.name}-${project.version}.jar")
-    buildpack = "https://github.com/marc0der/java-buildpack"
+    buildpack = "https://github.com/cloudfoundry/java-buildpack"
     target = 'https://api.run.pivotal.io'
     organization = envVariableAsGlobal("CF_ORG", true)
     username = envVariableAsGlobal("CF_USERNAME", true)
