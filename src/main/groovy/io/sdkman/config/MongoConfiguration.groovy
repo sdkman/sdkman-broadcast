@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext
@@ -54,12 +55,13 @@ class MongoConfiguration extends AbstractMongoConfiguration {
     @Override
     Mongo mongo() throws Exception {
         def serverAddress = new ServerAddress(mongoHost, mongoPort.toInteger())
-        if (mongoUsername && mongoPassword) {
-            def credential = MongoCredential.createMongoCRCredential(mongoUsername, mongoDbName, mongoPassword.toCharArray())
-            new MongoClient(serverAddress, [credential])
-        } else {
-            new MongoClient(serverAddress)
-        }
+        def credential = MongoCredential.createCredential(mongoUsername, mongoDbName, mongoPassword.toCharArray())
+        new MongoClient(serverAddress, [credential])
+    }
+
+    @Override
+    SimpleMongoDbFactory mongoDbFactory() {
+        new SimpleMongoDbFactory(mongo(), mongoDbName)
     }
 
     @Bean
