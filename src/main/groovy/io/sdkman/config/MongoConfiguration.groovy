@@ -55,8 +55,12 @@ class MongoConfiguration extends AbstractMongoConfiguration {
     @Override
     Mongo mongo() throws Exception {
         def serverAddress = new ServerAddress(mongoHost, mongoPort.toInteger())
-        def credential = MongoCredential.createCredential(mongoUsername, mongoDbName, mongoPassword.toCharArray())
-        new MongoClient(serverAddress, [credential])
+        if(mongoUsername && mongoPassword) {
+            def credential = MongoCredential.createCredential(mongoUsername, mongoDbName, mongoPassword.toCharArray())
+            new MongoClient(serverAddress, [credential])
+        } else {
+            new MongoClient(serverAddress)
+        }
     }
 
     @Override
