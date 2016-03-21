@@ -32,7 +32,7 @@ class MongoHelper {
     static prepareDB(){
         def mongo = new MongoClient()
         mongo.writeConcern = WriteConcern.NORMAL
-        mongo.getDB("gvm")
+        mongo.getDB("sdkman")
     }
 
     static insertBroadcastInDb(DB db, String broadcast, Date date = new Date(), uid = id.getAndIncrement().toString()){

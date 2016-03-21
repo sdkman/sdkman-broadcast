@@ -38,7 +38,7 @@ class MongoConfiguration extends AbstractMongoConfiguration {
     String mongoPort = "27017"
 
     @Value("#{systemEnvironment['MONGO_DB_NAME']}")
-    String mongoDbName = "gvm"
+    String mongoDbName = "sdkman"
 
     @Value("#{systemEnvironment['MONGO_USERNAME']}")
     String mongoUsername
