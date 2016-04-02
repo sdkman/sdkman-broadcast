@@ -31,8 +31,8 @@ class MongoHelper {
 
     static prepareDB(){
         def mongo = new MongoClient()
-        mongo.writeConcern = WriteConcern.NORMAL
-        mongo.getDB("sdkman")
+        mongo.writeConcern = WriteConcern.UNACKNOWLEDGED
+        mongo.getDatabase("sdkman")
     }
 
     static insertBroadcastInDb(DB db, String broadcast, Date date = new Date(), uid = id.getAndIncrement().toString()){
