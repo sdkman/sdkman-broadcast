@@ -15,10 +15,12 @@
  */
 package db
 
+import com.mongodb.BasicDBObject
 import com.mongodb.BasicDBObjectBuilder
 import com.mongodb.DB
 import com.mongodb.MongoClient
 import com.mongodb.WriteConcern
+import com.mongodb.client.MongoDatabase
 import org.bson.types.ObjectId
 
 import java.util.concurrent.atomic.AtomicLong
@@ -35,23 +37,23 @@ class MongoHelper {
         mongo.getDatabase("sdkman")
     }
 
-    static insertBroadcastInDb(DB db, String broadcast, Date date = new Date(), uid = id.getAndIncrement().toString()){
-        def collection  = db.getCollection("broadcast")
-        BasicDBObjectBuilder builder = start()
-            .add("_id", uid)
-            .add("text", broadcast)
-            .add("date", date)
-        collection.insert(builder.get())
+    static insertBroadcastInDb(MongoDatabase db, String broadcast, Date date = new Date(), uid = id.getAndIncrement().toString()){
+        def collection  = db.getCollection("broadcast", BasicDBObject.class)
+        def basicDbObject = new BasicDBObject()
+        basicDbObject.append("_id", uid)
+        basicDbObject.append("text", broadcast)
+        basicDbObject.append("date", date)
+        collection.insertOne(basicDbObject)
     }
 
-    static readBroadcastById(DB db, String uid) {
-        def collection = db.getCollection("broadcast")
+    static readBroadcastById(MongoDatabase db, String uid) {
+        def collection = db.getCollection("broadcast", BasicDBObject.class)
         def objectId = new ObjectId(uid)
-        BasicDBObjectBuilder builder = start().add("_id", objectId)
-        collection.findOne(builder.get())
+        def basicDbObject = new BasicDBObject("_id", objectId)
+        collection.find(basicDbObject).first()
     }
 
-    static dropCollectionFromDb(DB db, String collection){
+    static dropCollectionFromDb(MongoDatabase db, String collection){
         def dbCollection  = db.getCollection(collection)
         dbCollection.drop()
     }
