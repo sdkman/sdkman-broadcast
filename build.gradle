@@ -1,5 +1,3 @@
-import com.wiredforcode.gradle.spawn.KillProcessTask
-import com.wiredforcode.gradle.spawn.SpawnProcessTask
 import org.apache.tools.ant.filters.*
 
 buildscript {
@@ -9,7 +7,6 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.5.RELEASE"
-        classpath 'com.wiredforcode:gradle-spawn-plugin:0.5.2'
         classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.3'
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
     }
@@ -17,7 +14,6 @@ buildscript {
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
-apply plugin: 'spawn'
 apply plugin: 'cloudfoundry'
 apply plugin: 'license'
 
@@ -63,21 +59,14 @@ processResources {
     filter ReplaceTokens, tokens: ["application.version": project.version]
 }
 
-task startServer(type: SpawnProcessTask, dependsOn: 'assemble') {
-    command "java -jar ${projectDir}/build/libs/${project.name}-${project.version}.jar"
-    ready 'Started Application'
-}
-
-task stopServer(type: KillProcessTask)
-
 task functionalTest(type: Test) {
     testClassesDir = sourceSets.functionalTest.output.classesDir
     classpath = sourceSets.functionalTest.runtimeClasspath
-    dependsOn startServer
-    finalizedBy stopServer
 }
 
 check.dependsOn functionalTest
+
+jar.archiveName = "application.jar"
 
 cloudfoundry {
     file = file("${projectDir}/build/libs/${project.name}-${project.version}.jar")

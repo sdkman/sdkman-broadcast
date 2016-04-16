@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+language: groovy
+before_install:
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker run -d -p 27017:27017 mongo:latest
+script:
+  - "./gradlew assemble"
+  - docker build -t sdkman/sdkman-broadcast:1.0.0-SNAPSHOT .
+  - docker run -d -p 8080:8080 --net=host sdkman/sdkman-broadcast:1.0.0-SNAPSHOT
+  - "./gradlew check"
+after_success:
+  - docker push sdkman/sdkman-broadcast:1.0.0-SNAPSHOT
+cache:
+  directories:
+  - "$HOME/.gradle"
+env:
+  global:
+  - secure: SjKRL+uSBenZWsTGESG6YpAzXf2cskvXjxCBZUECJ6kbPWTOsYOXHwfRGAbm7FRXORng6fOP3qm3Btnsj8FdQK6j+Y29fzNuoyCIcHWiJnmATcr6Zt5XwCQtaijK81NXvXxE9z3GgQ2aR3SkRwFDdkSx1qklEJ5oG3HgISod8aA=
+  - secure: BjY7xKpGtxHC+DKHTazAeMPHWpDT+qPBT88fg0bbigFjqrD3MSvd5Vee9gFIKJZ/mSidAY13BpLh3svGeTdhLPoDRvDE2TL6H0D7ftv3oELl2Eo6trM7sB850tMoaO32k7rLu5tZimwbOxwEQreMiBIOn6t6v5jgw+Z8cy0TKCE=
+  - secure: gudsXHMO/w1bV/rD6Y3LZXI5iSryJ1wex0GsfTiwIYHL3BKoOPAMNCZ0AIDkPfxDWyMWu5zIqkhnmj24locwP8KBe9UuL7Qt2ws7Cs80Q+btooEqld/gVKSKUknGXu4Ix6GjoBuzJmOGL8P+TjN8dC4wwYyg+FRl2ktfaVrA5F8=

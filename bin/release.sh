@@ -16,7 +16,8 @@ git checkout -b "$BRANCH"
 
 #update version
 sed -i "s/1.0.0-SNAPSHOT/$VERSION/g" gradle.properties
-git add gradle.properties
+sed -i "s/1.0.0-SNAPSHOT/$VERSION/g" .travis.yml
+git add gradle.properties .travis.yml
 git commit -m "Update version of $BRANCH to $VERSION"
 
 #push branch
@@ -26,5 +27,5 @@ git push -f origin "$BRANCH:$BRANCH"
 git tag "$VERSION"
 git push origin "$VERSION"
 
-#bach to master branch
+#back to master branch
 git checkout master
