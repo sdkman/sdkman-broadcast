@@ -22,7 +22,7 @@ class HttpHelper {
 
     static slurper = new JsonSlurper()
 
-    static client = new RESTClient("http://localhost:8080")
+    static client = new RESTClient("http://localhost:9001")
 
     static post(map, closure) {
         client.post(map, closure)

@@ -6,7 +6,7 @@ import wslite.rest.RESTClient
 import static cucumber.api.groovy.Hooks.After
 import static db.MongoHelper.*
 
-def BASE_URL = "http://localhost:8080"
+def BASE_URL = "http://localhost:9001"
 restClient = new RESTClient(BASE_URL)
 slurper = new JsonSlurper()
 
