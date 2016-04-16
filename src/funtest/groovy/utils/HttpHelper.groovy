@@ -15,18 +15,11 @@
  */
 package utils
 
-import groovy.json.JsonSlurper
 import wslite.rest.RESTClient
 
 class HttpHelper {
 
-    static slurper = new JsonSlurper()
-
     static client = new RESTClient("http://localhost:9001")
-
-    static post(map, closure) {
-        client.post(map, closure)
-    }
 
     static get(map) {
         client.get(map)
