@@ -16,16 +16,12 @@
 package db
 
 import com.mongodb.BasicDBObject
-import com.mongodb.BasicDBObjectBuilder
-import com.mongodb.DB
 import com.mongodb.MongoClient
 import com.mongodb.WriteConcern
 import com.mongodb.client.MongoDatabase
 import org.bson.types.ObjectId
 
 import java.util.concurrent.atomic.AtomicLong
-
-import static com.mongodb.BasicDBObjectBuilder.start
 
 class MongoHelper {
 

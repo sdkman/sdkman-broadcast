@@ -36,24 +36,6 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     http { get(path: "/broadcast/$id") }
 }
 
-And(~'^the structured message is announced$') { ->
-    http{
-        post(path: "/announce/struct", headers: ["access_token": token, "consumer": consumer]) {
-            type "application/json"
-            json candidate: candidate, version: version, hashtag: hashtag
-        }
-    }
-}
-
-And(~'^the free form message is announced$') { ->
-    http {
-        post(path: "/announce/freeform", headers: ["access_token": token]) {
-            type "application/json"
-            json text: freeForm
-        }
-    }
-}
-
 private http(restAction) {
     try {
         httpResponse = restAction()
