@@ -6,5 +6,5 @@ RUN mkdir /broadcast
 
 ADD build/libs /broadcast
 
-ENTRYPOINT java -jar /broadcast/application.jar
+ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /broadcast/application.jar
 
