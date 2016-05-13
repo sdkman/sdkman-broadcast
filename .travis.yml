@@ -6,6 +6,7 @@ before_install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker run -d -p 27017:27017 mongo:latest
 script:
+  - "./gradlew clean assemble"
   - docker build -t sdkman/sdkman-broadcast:2.0.0-SNAPSHOT .
   - docker run -d -p 9001:9001 --net=host sdkman/sdkman-broadcast:2.0.0-SNAPSHOT
   - "./gradlew check"
