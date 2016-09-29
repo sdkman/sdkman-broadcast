@@ -14,3 +14,8 @@ after_success:
 cache:
   directories:
   - "$HOME/.gradle"
+# blacklist
+branches:
+  except:
+    - RELEASE
+
