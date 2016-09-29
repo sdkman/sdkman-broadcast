@@ -34,7 +34,7 @@ dependencies {
     testCompile 'org.objenesis:objenesis:2.1'
     testCompile 'info.cukes:cucumber-junit:1.1.8'
     testCompile 'info.cukes:cucumber-groovy:1.1.8'
-    testCompile 'com.github.groovy-wslite:groovy-wslite:0.8.0'
+    testCompile 'com.github.groovy-wslite:groovy-wslite:1.1.2'
 }
 
 test.testLogging.exceptionFormat = 'full'

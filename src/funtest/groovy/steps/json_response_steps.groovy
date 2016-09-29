@@ -1,3 +1,5 @@
+package steps
+
 import static cucumber.api.groovy.EN.And
 
 And(~'^has a single result$') { ->

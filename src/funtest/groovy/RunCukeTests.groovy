@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
 	format=["pretty", "html:build/reports/cucumber"],
 	strict=true,
 	features=["src/funtest/features"],
-	glue=["src/funtest/steps"],
+	glue=["src/funtest/groovy"],
 	tags=["~@manual", "~@review"]
 )
 class RunCukesTest {}

@@ -1,5 +1,6 @@
-package io.sdkman
+package steps
 
+import utils.HttpHelper
 import wslite.rest.RESTClientException
 import static cucumber.api.groovy.EN.And
 import static utils.HttpHelper.*
@@ -36,6 +37,18 @@ And(~'^a message is requested by identifier "([^"]*)"$') { String id ->
     http { get(path: "/broadcast/$id") }
 }
 
+And(~/^an HTTP GET on the "([^"]*)" endpoint$/) { String endpoint ->
+    http { get(path: endpoint) }
+}
+
+And(~/^an HTTP HEAD on the "([^"]*)" endpoint$/) { String endpoint ->
+    http { head(path: endpoint) }
+}
+
+And(~/^the application should report a name of "(.*)"$/) { String name ->
+    assert name == json(response).app.name
+}
+
 private http(restAction) {
     try {
         httpResponse = restAction()
@@ -48,4 +61,8 @@ private http(restAction) {
         response = httpResponse.statusMessage
         statusCode = httpResponse.statusCode
     }
+}
+
+private json(response) {
+    HttpHelper.slurper.parseText(response)
 }

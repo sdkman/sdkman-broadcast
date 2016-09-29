@@ -1,4 +1,4 @@
-import cucumber.api.PendingException
+package steps
 
 import static cucumber.api.groovy.EN.And
 

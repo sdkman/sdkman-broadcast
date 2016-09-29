@@ -1,3 +1,5 @@
+package steps
+
 import static cucumber.api.groovy.EN.And
 import static db.MongoHelper.*
 
