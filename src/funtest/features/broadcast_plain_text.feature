@@ -45,10 +45,10 @@ Feature: Broadcast Plain Text
     When the latest messages are requested
     Then the content type is "text/plain"
     And a total of 3 messages has been received
-    And the message "* 12/05/14: Groovy 2.3.0 final has been released!" is received "first"
-    And the message "* 11/05/14: Groovy 2.3.0-rc-1 has been released." is received "second"
-    And the message "* 10/05/14: Groovy 2.3.0-beta-4 has been released." is received "third"
-    And the message "* 09/05/14: Groovy 2.3.0-beta-3 has been released." has not been received
+    And the message "* 2014-05-12: Groovy 2.3.0 final has been released!" is received "first"
+    And the message "* 2014-05-11: Groovy 2.3.0-rc-1 has been released." is received "second"
+    And the message "* 2014-05-10: Groovy 2.3.0-beta-4 has been released." is received "third"
+    And the message "* 2014-05-09: Groovy 2.3.0-beta-3 has been released." has not been received
     And an "OK" status is returned
 
   Scenario: Broadcast the latest 2 Messages explicitly
@@ -58,7 +58,7 @@ Feature: Broadcast Plain Text
     When the latest "2" messages are requested
     Then the content type is "text/plain"
     And a total of 2 messages has been received
-    And the message "* 12/05/14: Groovy 2.3.0 final has been released!" is received "first"
-    And the message "* 11/05/14: Groovy 2.3.0-rc-1 has been released." is received "second"
-    And the message "* 10/05/14: Groovy 2.3.0-beta-4 has been released." has not been received
+    And the message "* 2014-05-12: Groovy 2.3.0 final has been released!" is received "first"
+    And the message "* 2014-05-11: Groovy 2.3.0-rc-1 has been released." is received "second"
+    And the message "* 2014-05-10: Groovy 2.3.0-beta-4 has been released." has not been received
     And an "OK" status is returned

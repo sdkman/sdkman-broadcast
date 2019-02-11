@@ -18,8 +18,7 @@ package io.sdkman.service
 import io.sdkman.domain.Broadcast
 import org.springframework.stereotype.Service
 
-import static java.text.DateFormat.SHORT
-import static java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
 
 @Service
 class TextService {
@@ -34,7 +33,7 @@ class TextService {
 
     String prepare(ArrayList<Broadcast> broadcasts) {
         def output = "$HEADER\n"
-        if(broadcasts)
+        if (broadcasts)
             output += buildMessage(broadcasts)
         else
             output += NO_BROADCASTS
@@ -43,8 +42,9 @@ class TextService {
 
     private static buildMessage(broadcasts) {
         def output = ""
+        def iso8601Format = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
         broadcasts.each { broadcast ->
-            output += "* ${getDateInstance(SHORT, Locale.UK).format(broadcast.date)}: $broadcast.text\n"
+            output += "* ${iso8601Format.format(broadcast.date)}: $broadcast.text\n"
         }
         output
     }
