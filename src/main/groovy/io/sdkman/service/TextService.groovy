@@ -43,12 +43,9 @@ class TextService {
     }
 
     private buildMessage(broadcasts) {
-        def output = ""
-        broadcasts.each { broadcast ->
-            output += "* ${toISO8601(broadcast.date)}: $broadcast.text" + lineSeparator()
-        }
-
-        output
+        broadcasts
+            .collect{"* ${toISO8601(it.date)}: $it.text"}
+            .join(lineSeparator()) + lineSeparator()
     }
 
     private String toISO8601(date) {
