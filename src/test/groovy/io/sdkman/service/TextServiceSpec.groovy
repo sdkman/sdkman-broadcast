@@ -29,11 +29,6 @@ class TextServiceSpec extends Specification {
     Broadcast broadcast2 = new Broadcast(id: 2, text: "text2", date: new Date())
 
 
-    Date iso8601Date = new Date().copyWith(
-            year: 2019,
-            month: Calendar.FEBRUARY,
-            dayOfMonth: 11)
-    Broadcast iso8601Broadcast = new Broadcast(id: "3",text: "Groovy 2.7.1 released!", date: iso8601Date)
 
     void setup() {
         service = new TextService()
@@ -146,6 +141,13 @@ class TextServiceSpec extends Specification {
     }
 
     void "should format the date in iso 8601 format"(){
+        given:
+        Date iso8601Date = new Date().copyWith(
+                year: 2019,
+                month: Calendar.FEBRUARY,
+                dayOfMonth: 11)
+        Broadcast iso8601Broadcast = new Broadcast(id: "3",text: "Groovy 2.7.1 released!", date: iso8601Date)
+
         when:
         String message = service.prepare(iso8601Broadcast)
 
