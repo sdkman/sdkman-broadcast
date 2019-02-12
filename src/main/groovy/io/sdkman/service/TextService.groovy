@@ -45,11 +45,11 @@ class TextService {
     private buildMessage(broadcasts) {
         broadcasts
             .collect{messageLine(it)}
-            .join()
+            .join(lineSeparator()) + lineSeparator()
     }
 
     private messageLine = {broadcast ->
-        "* ${toISO8601(broadcast.date)}: $broadcast.text" + lineSeparator()
+        "* ${toISO8601(broadcast.date)}: $broadcast.text"
     }
 
     private toISO8601 = { date ->
