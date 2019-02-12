@@ -18,8 +18,9 @@ package io.sdkman.service
 import io.sdkman.domain.Broadcast
 import spock.lang.Specification
 
-import static io.sdkman.service.TextService.getFOOTER
-import static io.sdkman.service.TextService.getHEADER
+import static io.sdkman.service.TextService.FOOTER
+import static io.sdkman.service.TextService.HEADER
+import static java.lang.System.lineSeparator
 
 class TextServiceSpec extends Specification {
 
@@ -27,7 +28,6 @@ class TextServiceSpec extends Specification {
 
     Broadcast broadcast1 = new Broadcast(id: 1, text: "text1", date: new Date())
     Broadcast broadcast2 = new Broadcast(id: 2, text: "text2", date: new Date())
-
 
 
     void setup() {
@@ -140,19 +140,18 @@ class TextServiceSpec extends Specification {
         message.contains " #groovy"
     }
 
-    void "should format the date in iso 8601 format"(){
+    void "should format the date in iso 8601 format"() {
         given:
         Date iso8601Date = new Date().copyWith(
                 year: 2019,
                 month: Calendar.FEBRUARY,
                 dayOfMonth: 11)
-        Broadcast iso8601Broadcast = new Broadcast(id: "3",text: "Groovy 2.7.1 released!", date: iso8601Date)
+        Broadcast iso8601Broadcast = new Broadcast(id: "3", text: "Groovy 2.7.1 released!", date: iso8601Date)
 
         when:
         String message = service.prepare(iso8601Broadcast)
 
         then:
-        message.contains "* 2019-02-11: Groovy 2.7.1 released!"+ System.lineSeparator()
-
+        message.contains "* 2019-02-11: Groovy 2.7.1 released!${lineSeparator()}"
     }
 }
