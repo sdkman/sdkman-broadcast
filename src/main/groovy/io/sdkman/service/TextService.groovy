@@ -18,8 +18,9 @@ package io.sdkman.service
 import io.sdkman.domain.Broadcast
 import org.springframework.stereotype.Service
 
-import static java.text.DateFormat.SHORT
-import static java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
+
+import static java.lang.System.lineSeparator
 
 @Service
 class TextService {
@@ -34,19 +35,26 @@ class TextService {
 
     String prepare(ArrayList<Broadcast> broadcasts) {
         def output = "$HEADER\n"
-        if(broadcasts)
+        if (broadcasts)
             output += buildMessage(broadcasts)
         else
             output += NO_BROADCASTS
         "${output}$FOOTER"
     }
 
-    private static buildMessage(broadcasts) {
-        def output = ""
-        broadcasts.each { broadcast ->
-            output += "* ${getDateInstance(SHORT, Locale.UK).format(broadcast.date)}: $broadcast.text\n"
-        }
-        output
+    private buildMessage(broadcasts) {
+        broadcasts
+            .collect{messageLine(it)}
+            .join(lineSeparator()) + lineSeparator()
+    }
+
+    private messageLine = {broadcast ->
+        "* ${toISO8601(broadcast.date)}: $broadcast.text"
+    }
+
+    private toISO8601 = { date ->
+        def iso8601Format = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        iso8601Format.format(date)
     }
 
     String composeStructuredMessage(String candidate, String version, String hashtag = candidate) {
