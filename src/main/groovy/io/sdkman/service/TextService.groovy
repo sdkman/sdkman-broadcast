@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service
 
 import java.text.SimpleDateFormat
 
+import static java.lang.System.lineSeparator
+
 @Service
 class TextService {
 
@@ -40,13 +42,18 @@ class TextService {
         "${output}$FOOTER"
     }
 
-    private static buildMessage(broadcasts) {
+    private buildMessage(broadcasts) {
         def output = ""
-        def iso8601Format = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
         broadcasts.each { broadcast ->
-            output += "* ${iso8601Format.format(broadcast.date)}: $broadcast.text\n"
+            output += "* ${toISO8601(broadcast.date)}: $broadcast.text" + lineSeparator()
         }
+
         output
+    }
+
+    private String toISO8601(date) {
+        def iso8601Format = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        iso8601Format.format(date)
     }
 
     String composeStructuredMessage(String candidate, String version, String hashtag = candidate) {
