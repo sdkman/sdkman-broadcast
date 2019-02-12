@@ -44,11 +44,11 @@ class TextService {
 
     private buildMessage(broadcasts) {
         broadcasts
-            .collect{"* ${toISO8601(it.date)}: $it.text"}
-            .join(lineSeparator()) + lineSeparator()
+            .collect{"* ${toISO8601(it.date)}: $it.text" + lineSeparator()}
+            .join()
     }
 
-    private String toISO8601(date) {
+    private toISO8601 = { date ->
         def iso8601Format = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
         iso8601Format.format(date)
     }
