@@ -18,4 +18,5 @@ cache:
 branches:
   except:
     - RELEASE
-
+notifications:
+  slack: sdkman:QdA1XVUuYDjlYL4Z7gm16OEc
