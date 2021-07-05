@@ -16,7 +16,7 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
       - name: Run tests
-        run: ./gradlew check
+        run: ./gradlew clean check --stacktrace
       - uses: kentaro-m/auto-assign-action@v1.1.2
         with:
           configuration-path: ".github/auto_assign.yml"
