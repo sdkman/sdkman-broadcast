@@ -4,17 +4,19 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "http://repo.spring.io/libs-release" }
+        maven { url "https://repo.spring.io/libs-release" }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.5.RELEASE"
         classpath "ch.kk7:gradle-spawn-plugin:1.0.20180924200750"
+        classpath 'com.netflix.nebula:nebula-release-plugin:4.2.0'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
 apply plugin: "ch.kk7.spawn"
+apply plugin: 'nebula.nebula-release'
 
 repositories {
     mavenCentral()
@@ -22,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:2.4.7"
+    compile "org.codehaus.groovy:groovy-all:2.4.19"
     compile "org.codehaus.gpars:gpars:1.2.1"
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
@@ -41,16 +43,16 @@ dependencies {
 test.testLogging.exceptionFormat = 'full'
 
 configurations {
-    functTestCompile.extendsFrom testCompile
-    functTestRuntime.extendsFrom testRuntime
+    funtestCompile.extendsFrom testCompile
+    funtestRuntime.extendsFrom testRuntime
 }
 
 sourceSets {
-    functionalTest {
-        groovy.srcDir file('src/funtest/groovy')
-        resources.srcDir file('src/funtest/resources')
-        compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.functTestCompile
-        runtimeClasspath = output + compileClasspath + configurations.functTestRuntime
+    funtest {
+        groovy.srcDir file("src/funtest/groovy")
+        resources.srcDir     file("src/funtest/resources")
+        compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.funtestCompile
+        runtimeClasspath = output + compileClasspath + configurations.funtestRuntime
     }
 }
 
@@ -71,8 +73,8 @@ task stopService(type: KillTask) {
 
 task functionalTest(type: Test) {
     dependsOn startService
-    testClassesDir = sourceSets.functionalTest.output.classesDir
-    classpath = sourceSets.functionalTest.runtimeClasspath
+    testClassesDir = sourceSets.funtest.output.classesDir
+    classpath = sourceSets.funtest.runtimeClasspath
     finalizedBy stopService
 }
 
