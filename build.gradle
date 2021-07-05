@@ -2,21 +2,22 @@ import org.apache.tools.ant.filters.*
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "http://repo.spring.io/libs-release" }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.5.RELEASE"
-        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+        classpath "ch.kk7:gradle-spawn-plugin:1.0.20180924200750"
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'spring-boot'
-apply plugin: 'license'
+apply plugin: "ch.kk7.spawn"
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven { url 'http://repo.spring.io/release' }
 }
 
@@ -47,7 +48,7 @@ configurations {
 sourceSets {
     functionalTest {
         groovy.srcDir file('src/funtest/groovy')
-        resources.srcDir     file('src/funtest/resources')
+        resources.srcDir file('src/funtest/resources')
         compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.functTestCompile
         runtimeClasspath = output + compileClasspath + configurations.functTestRuntime
     }
@@ -57,16 +58,24 @@ processResources {
     filter ReplaceTokens, tokens: ["application.version": project.version]
 }
 
-task functionalTest(type: Test) {
-    testClassesDir = sourceSets.functionalTest.output.classesDir
-    classpath = sourceSets.functionalTest.runtimeClasspath
+task startService(type: SpawnTask) {
+    dependsOn assemble
+    command "java -Djava.security.egd=file:/dev/./urandom -jar build/libs/application.jar"
+    waitFor "Started Application"
+    waitForTimeout 30000
 }
 
-check.dependsOn functionalTest
+task stopService(type: KillTask) {
+    kills startService
+}
+
+task functionalTest(type: Test) {
+    dependsOn startService
+    testClassesDir = sourceSets.functionalTest.output.classesDir
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    finalizedBy stopService
+}
 
 jar.archiveName = "application.jar"
 
-license {
-	header file('gradle/HEADER')
-	strictCheck true
-}
+check.dependsOn functionalTest
