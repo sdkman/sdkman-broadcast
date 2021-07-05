@@ -29,7 +29,7 @@ jobs:
       - name: Set release version
         id: var
         run: echo "::set-output name=release_version::$(git tag --sort=taggerdate | grep -E '^v[0-9]' | tail -1 | cut -c2-)"
-      - name: Build Shadow Jar
+      - name: Assemble
         run: ./gradlew clean assemble
       - name: Log in to Docker Hub
         run: |
