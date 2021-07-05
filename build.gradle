@@ -3,6 +3,7 @@ import org.apache.tools.ant.filters.*
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://repo.spring.io/libs-release" }
     }
@@ -20,6 +21,7 @@ apply plugin: 'nebula.nebula-release'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url 'http://repo.spring.io/release' }
 }
 
