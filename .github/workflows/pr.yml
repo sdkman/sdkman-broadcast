@@ -9,13 +9,14 @@ jobs:
         ports:
           - 27017:27017
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '8'
-      - name: Run tests
+      - name: Run checks
         run: ./gradlew clean check --stacktrace
       - uses: kentaro-m/auto-assign-action@v1.1.2
         with:
