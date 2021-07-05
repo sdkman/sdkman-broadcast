@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.*
-
 buildscript {
     repositories {
         mavenCentral()
@@ -56,10 +54,6 @@ sourceSets {
         compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.funtestCompile
         runtimeClasspath = output + compileClasspath + configurations.funtestRuntime
     }
-}
-
-processResources {
-    filter ReplaceTokens, tokens: ["application.version": project.version]
 }
 
 task startService(type: SpawnTask) {
