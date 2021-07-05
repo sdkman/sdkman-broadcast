@@ -36,7 +36,7 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image
         run: |
-          docker build -t sdkman/sdkman-broker:${{ steps.var.outputs.release_version }} -f Dockerfile .
+          docker build -t sdkman/sdkman-broadcast:${{ steps.var.outputs.release_version }} -f Dockerfile .
       - name: Push to Docker Hub
         run: |
-          docker push sdkman/sdkman-broker:${{ steps.var.outputs.release_version }}
+          docker push sdkman/sdkman-broadcast:${{ steps.var.outputs.release_version }}
