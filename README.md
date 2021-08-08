@@ -1,5 +1,8 @@
 # SDKMAN! Broadcast API
 
+![Build status](https://github.com/sdkman/sdkman-broadcast/actions/workflows/release.yml/badge.svg)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdkman/sdkman-broadcast)
+
 This is a dedicated microservice API used for Broadcast Messages on the SDKMAN!
 platform. It is used by SDKMAN! to announce breaking news about Candidate
 Releases and other important events. It's Broadcast Messages can be consumed
